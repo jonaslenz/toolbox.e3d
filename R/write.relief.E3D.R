@@ -9,7 +9,7 @@
 #' @seealso
 #' @export
 #' @examples
-#' write.relief.E3D()
+#' write.relief.E3D(path = "C:/")
 
 write.relief.E3D <- function(POLY_ID = c(1,2,3),length=50,slope = 11, path, filename = "dem.asc")
 {

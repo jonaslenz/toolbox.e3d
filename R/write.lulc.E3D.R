@@ -8,9 +8,9 @@
 #' @seealso
 #' @export
 #' @examples
-#' write.LULC.E3D()
+#' write.lulc.E3D(path = "C:/")
 
-write.LULC.E3D <- function(POLY_ID = c(1,2,3),length=50, path, filename = "lulc.asc")
+write.lulc.E3D <- function(POLY_ID = c(1,2,3),length=50, path, filename = "lulc.asc")
 {
 require(raster)
     #EROSION-3D requires at least two rows
