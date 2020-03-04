@@ -1,7 +1,7 @@
 #' calculate water content for given matrix potential for E3D
 #'
 #' calculates water content from given pF-value (matrix potential)
-#' @inheritParams str_detect
+#' @inheritParams
 #' @return moist
 #' @seealso psimo.E3D
 #' @export

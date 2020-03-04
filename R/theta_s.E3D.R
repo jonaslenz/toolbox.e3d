@@ -1,7 +1,7 @@
 #' calculate THETA_S
 #'
 #' calculates THETA_S-parameter (maximum soil moisture) according to Vereecken
-#' @inheritParams str_detect
+#' @inheritParams
 #' @return THETA_S
 #' @seealso
 #' @export

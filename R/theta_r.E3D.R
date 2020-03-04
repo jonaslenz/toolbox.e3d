@@ -1,7 +1,7 @@
 #' calculate THETA_R
 #'
 #' calculates THETA_R-parameter (minimum soil moisture) according to Vereecken
-#' @inheritParams str_detect
+#' @inheritParams
 #' @return THETA_R
 #' @seealso
 #' @export

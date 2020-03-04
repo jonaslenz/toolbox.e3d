@@ -1,14 +1,14 @@
 #' creates folder structure for E3D modelling
 #'
-#' 
-#' @inheritParams str_detect
+#'
+#' @inheritParams
 #' @return creates folders
 #' @seealso
 #' @export
 #' @examples
 #'
 
-create_folders.E3D <- function(path)
+create_folders.E3D <- function(path, dummy_relief.log = FALSE)
 {
   #create model folders
   if(!dir.exists(paste0(path,"model/"))){dir.create(paste0(path,"model/"))}

@@ -1,7 +1,7 @@
 #' calculate matrix potential according to Vereecken
 #'
 #' calculates matrix potential PsimO [hPa] according to Vereecken
-#' @inheritParams str_detect
+#' @inheritParams
 #' @return psimo
 #' @seealso
 #' @export

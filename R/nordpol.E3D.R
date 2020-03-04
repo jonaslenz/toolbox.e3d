@@ -1,7 +1,7 @@
 #' calculate Nordpol
 #'
 #' calculates n-parameter according to Vereecken
-#' @inheritParams str_detect
+#' @inheritParams
 #' @return nordpol
 #' @seealso
 #' @export

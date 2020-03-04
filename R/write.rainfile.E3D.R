@@ -2,7 +2,7 @@
 #'
 #' This function writes a rainintensity input file, which can be used as input in EROSION-3D.
 #' x shall be a dataframe containing a timeline
-#' @inheritParams str_detect
+#' @inheritParams
 #' @return No return value, but file is written
 #' @seealso
 #' @export

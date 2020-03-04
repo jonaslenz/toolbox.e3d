@@ -3,7 +3,7 @@
 #' This function writes a landuse/landcover file for simultaneously modelling of EROSION-2D slopes in EROSION-3D.
 #' One row represents one homogeneous soil parameter set.
 #' Length defines slope length.
-#' @inheritParams str_detect
+#' @inheritParams
 #' @return No return value, but file is written
 #' @seealso
 #' @export

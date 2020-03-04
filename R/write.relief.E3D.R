@@ -4,7 +4,7 @@
 #' One row represents one EROSION-2D slope.
 #' Length defines slope length.
 #' Slope is given in %.
-#' @inheritParams str_detect
+#' @inheritParams
 #' @return No return value, but file is written
 #' @seealso
 #' @export

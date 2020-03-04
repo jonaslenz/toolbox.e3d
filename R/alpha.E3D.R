@@ -1,13 +1,13 @@
 #' calculate ALPHA
 #'
 #' calculates alpha-parameter accordng to Vereecken
-#' @inheritParams str_detect
+#'
+#' @inheritParams
 #' @return alpha
 #' @seealso
 #' @export
 #' @examples
-#'
-
+#' alpha.E3D(30,20,1300,1.3)
 alpha.E3D <- function(Sa,Cl,Bulk,Corg)
 {
   return(exp(-2.486 + 0.025 * Sa - 0.351 * Corg - 2.617 / 1000 * Bulk - 0.023*Cl));
