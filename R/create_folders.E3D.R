@@ -1,4 +1,4 @@
-#' creates folder structure for E3D modelling
+#' creates folder structure including a basic E3D modell
 #'
 #'
 #' @inheritParams
@@ -8,12 +8,12 @@
 #' @examples
 #'
 
-create_folders.E3D <- function(path, dummy_relief.log = FALSE)
+create_folders.E3D <- function(path, overwrite = FALSE)
 {
-  #create model folders
-  if(!dir.exists(paste0(path,"model/"))){dir.create(paste0(path,"model/"))}
-  if(!dir.exists(paste0(path,"model/soil/"))){dir.create(paste0(path,"model/soil/"))}
-  if(!dir.exists(paste0(path,"model/relief/"))){dir.create(paste0(path,"model/relief/"))}
-  if(!dir.exists(paste0(path,"model/result/"))){dir.create(paste0(path,"model/result/"))}
+if (!overwrite)
+{
+  if(dir.exists(paste0(path,"/model/"))){stop("Directory allready exists. Use overwrite = TRUE")}
+}
+  unzip(zipfile= system.file("model.zip", package = "liberos"),exdir = path, overwrite = overwrite)
 }
 
