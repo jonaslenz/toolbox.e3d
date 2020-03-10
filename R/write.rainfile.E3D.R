@@ -9,7 +9,7 @@
 #' @examples
 #' write.rainfile.E3D()
 
-write.rainfile.E3D <- function(x = cbind.data.frame(time=c(0,60,120,240),intens=c(0.1,0.6,1.2,2.4)), date = "1990-10-27", filename = "rain_e3d.reg", timestep = 60)
+write.rainfile.E3D <- function(x = cbind.data.frame(time=c(0,60,120,240),intens=c(0.1,0.6,1.2,2.4)), path, date = "1990-10-27", filename = "/model/rain_e3d.csv", timestep = 60)
 {
   if(!"intens" %in% names(x)){stop("missing intensity, check input")}
   if(!"time" %in% names(x)){stop("missing timeline, check input")}
@@ -28,5 +28,5 @@ write.rainfile.E3D <- function(x = cbind.data.frame(time=c(0,60,120,240),intens=
                    }else{x$intens[x$time==max(x$time)]}
                ))
   }
-  write.table(a,file = filename, row.names = FALSE, col.names = FALSE, sep = ",", quote = FALSE)
+  write.table(a,file = paste0(path,filename), row.names = FALSE, col.names = FALSE, sep = ",", quote = FALSE)
 }
