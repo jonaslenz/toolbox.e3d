@@ -8,12 +8,8 @@
 #' @examples
 #'
 
-create_folders.E3D <- function(path, overwrite = FALSE)
+create_folders.E3D <- function(path = tmpDir(), overwrite = FALSE)
 {
-if (!overwrite)
-{
-  if(dir.exists(paste0(path,"/model/"))){stop("Directory allready exists. Use overwrite = TRUE")}
+  unzip(zipfile= system.file("model.zip", package = "liberos"),exdir = paste0(path,"model"), overwrite = overwrite);
+  return(paste0(path,"model"));
 }
-  unzip(zipfile= system.file("model.zip", package = "liberos"),exdir = path, overwrite = overwrite)
-}
-
