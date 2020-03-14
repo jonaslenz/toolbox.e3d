@@ -6,12 +6,11 @@
 #' @export
 #' @examples
 #'
-determine.skin.runoff.E3D <- function(Cl, Si, Sa, Corg, Bulk, Moist, CumRunoff, intensity, plotwidth, plotlength, slope, endmin, ponding =FALSE)
+determine.skin.runoff.E3D <- function(Cl, Si, Sa, Corg, Bulk, Moist, CumRunoff, intensity, plotwidth, plotlength, slope, endmin, ponding =FALSE, simlines = 100, path = "C:/E3Dmodel/", silent=TRUE)
 {
-  path <- "C:/Users/Jonas Lenz/Desktop/e3d_parametrisierung_test"
-  unzip(zipfile= system.file("model.zip", package = "liberos"),exdir = paste0(path,""))
+  create_folders.E3D(path, overwrite = TRUE)
 
-  soils <- read.csv(paste0(path,"/model/soil/soil_params.csv"))[1,]
+  soils <- read.csv(paste0(path,"model/soil/soil_params.csv"))[1,]
   soils$BLKDENSITY <- Bulk
   soils$CORG <- Corg
   soils$INITMOIST <- Moist
@@ -28,60 +27,54 @@ determine.skin.runoff.E3D <- function(Cl, Si, Sa, Corg, Bulk, Moist, CumRunoff, 
   soils$THETA_S <- 0
   soils$ALPHA <- 0
   soils$NORDPOL <- 0
-  soils$POLY_ID <- 1
 
+  soils[2:simlines,] <- soils[1,]
+  soils$POLY_ID<- 1:simlines
 
-  write.relief.E3D(POLY_ID = c(1,1,1),plotlength,round(slope),paste0(path,"/model/"))
-  system2("C:/Program Files (x86)/Erosion-3D_32-320/e3d", paste0('/r "',path,'/model/run.par"'), wait=TRUE)
+  write.relief.E3D(POLY_ID = soils$POLY_ID,plotlength,round(slope),paste0(path,"model/"))
+  system2("C:/Program Files (x86)/Erosion-3D_32-320/e3d", paste0('/r "',path,'model/run.par"'), wait=TRUE)
 
-  write.lulc.E3D(POLY_ID = c(1,1,1),length = plotlength, path = paste0(path,"/model/soil/"), filename = "landuse.asc")
+  write.landuse.E3D(POLY_ID = soils$POLY_ID,length = plotlength, path = paste0(path,"model/soil/"), filename = "landuse.asc")
 
-  write.rainfile.E3D(cbind.data.frame(time = c(0,endmin*60), intens = intensity), path, filename = "/model/rain_e3d.csv")
-
-
+  write.rainfile.E3D(cbind.data.frame(time = c(0,(endmin-1)*60), intens = intensity), path, filename = "model/rain_e3d.csv")
 
 
 
   #iteration of Skinfaktor
-  soils$SKINFACTOR = 0;                                      #Skinfactor==0 means no infiltration
+  skinupper=100
+  skinlower=0.00000001
   i=1;                                           #counter for iteration steps
-  deci=1;                                        #decimal operator for iteration of Skinfactor
-  runoff_highSkin=0;                             #high Skinfactor means no runoff
-  runoff_lowSkin=intensity*plotlength*endmin;      #all rainfall contributes to runoff, when Skinfactor == 0
+
+  runoff_noinfil=intensity*plotlength*endmin;      #all rainfall contributes to runoff, when Skinfactor == 0
 
   CumRunoff <- CumRunoff / plotwidth;
 
-  if(runoff_lowSkin<CumRunoff)
+  if(runoff_noinfil<CumRunoff)
   {print("Measured cumulative runoff is higher than available water from rainfall. Did somebody pee in your measurement cup?"); Skin = NA;}else
   {
     repeat{
-      soils$SKINFACTOR <- soils$SKINFACTOR+1*deci;    #increase higher skinfactor to decrease runoff
-      #message(paste(i,": ", soils$SKINFACTOR))
-      write.csv(soils,paste0(path,"/model/soil/soil_params.csv"), row.names = FALSE, quote = FALSE)
+      if(!silent){message(paste(i,":",skinlower,skinupper));}
+      soils$SKINFACTOR <- 10^seq(log10(skinlower),log10(skinupper), length.out = simlines);
 
-      if(ponding){system2("C:/Program Files (x86)/Erosion-3D_32-320/e3d", paste0('/c "',path,'/model/run.par"'), wait=TRUE)}else{
-      system2("C:/Program Files (x86)/Erosion-3D_32-320/e3d", paste0('/c "',path,'/model/run_noponding.par"'), wait=TRUE)}
+      write.csv(soils,paste0(path,"model/soil/soil_params.csv"), row.names = FALSE, quote = FALSE)
 
-      runoff_highSkin <- unique(raster(read.asciigrid(paste(path,"/model/result/sum_q.asc", sep="")))[,1])*1000
+      if(ponding){system2("C:/Program Files (x86)/Erosion-3D_32-320/e3d", paste0('/c "',path,'model/run.par"'), wait=TRUE)}else{
+      system2("C:/Program Files (x86)/Erosion-3D_32-320/e3d", paste0('/c "',path,'model/run_noponding.par"'), wait=TRUE)}
 
+      runoff <- raster(read.asciigrid(paste(path,"model/result/sum_q.asc", sep="")))[,1]*1000
 
+      skinlower <- soils$SKINFACTOR[Position(function(x){CumRunoff<x},runoff, right = TRUE)]
+      skinupper <- soils$SKINFACTOR[Position(function(x){CumRunoff>x},runoff)]
 
 
       if(i>100) {print("no iteration"); break;} #end if not iterating
-      if(runoff_highSkin/CumRunoff>0.999999 && runoff_highSkin/CumRunoff<1.000001) break; #end if iterating
+      if(skinupper/skinlower>0.999 && skinupper/skinlower<1.001) break; #end if iterating
       i=i+1;                                       #increase iteration counter
-
-      if(CumRunoff>runoff_highSkin &&              #if Cumrunoff is in between lower and higher calcuated runoff, actual digit of Skin is 1 higher than target skin
-         CumRunoff<runoff_lowSkin)
-      {soils$SKINFACTOR=soils$SKINFACTOR-1.00000000000001*deci; deci=deci*0.1;}else       #calculate next digit of Skin (decrease actual SKin; decrease decimal digit)
-      {runoff_lowSkin = runoff_highSkin;}     #if runoff_lowSkin is lower than CumRunoff, set higher runoff as lower runoff
-      #message(runoff_lowSkin);
-      runoff_highSkin = 0;                         #reset lower Runoff, for next iteration step
 
     }
   }
 
 
 
-  return(soils$SKINFACTOR);
+  return(mean(c(skinupper,skinlower)));
 }
