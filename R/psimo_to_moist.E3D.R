@@ -6,8 +6,8 @@
 #' @param THETA_S Maximum volumetric water content (0-100)
 #' @param THETA_R Minimum volumetric water content (0-100)
 #' @param pF target pF value
-#' @param alpha
-#' @param nordpol
+#' @param ALPHA Van-Genuchten parameter
+#' @param NORDPOL Van-Genuchten parameter
 #' @return moist
 #' @seealso psimo.E3D
 #' @export

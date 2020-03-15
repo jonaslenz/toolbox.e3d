@@ -1,13 +1,13 @@
 #' calculate  matrix potential
 #'
-#' calculates matrix potential PsimO [hPa] according to Van-genuchten 1980 - doi:10.2136/sssaj1980.03615995004400050002x
+#' calculates matrix potential PsimO [hPa] according to Van-Genuchten 1980 - doi:10.2136/sssaj1980.03615995004400050002x
 #' as cited in Schmidt 1996 (ISBN 978-3-88009-062-0)
 #'
 #' @param THETA_S Maximum volumetric water content (0-100)
 #' @param THETA_R Minimum volumetric water content (0-100)
 #' @param Initmoist actual volumetric water content (0-100)
-#' @param alpha
-#' @param nordpol
+#' @param ALPHA Van-Genuchten parameter
+#' @param NORDPOL Van-Genuchten parameter
 #' @return psimo
 #' @seealso alpha.E3D, nordpol.E3D, theta_s.E3D, theta_r.E3D
 #' @export
