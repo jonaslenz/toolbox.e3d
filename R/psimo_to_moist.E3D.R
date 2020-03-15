@@ -1,14 +1,18 @@
-#' calculate water content for given matrix potential for E3D
+#' calculate water content to achieve given pF for E3D
 #'
-#' calculates water content from given pF-value (matrix potential)
-#' @inheritParams
+#' calculates water content from given pF-value (matrix potential).
+#' a reverse function of psimo.E3D
+#'
+#' @param THETA_S Maximum volumetric water content (0-100)
+#' @param THETA_R Minimum volumetric water content (0-100)
+#' @param pF target pF value
+#' @param alpha
+#' @param nordpol
 #' @return moist
 #' @seealso psimo.E3D
 #' @export
-#' @examples
-#'
 
-psimo_to_moist.E3D <- function(THETA_S,THETA_R, pF, ALPHA,NORDPOL, digits = 2)
+pF_to_moist.E3D <- function(THETA_S,THETA_R, pF, ALPHA,NORDPOL, digits = 2)
 {
   target_Psi <- 10^(pF)
   return(round(((THETA_S - THETA_R) /((target_Psi)^NORDPOL * ALPHA^NORDPOL + 1) + THETA_R)*100, digits));

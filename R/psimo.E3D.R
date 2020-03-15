@@ -1,12 +1,16 @@
-#' calculate matrix potential according to Vereecken
+#' calculate  matrix potential
 #'
-#' calculates matrix potential PsimO [hPa] according to Vereecken
-#' @inheritParams
+#' calculates matrix potential PsimO [hPa] according to Van-genuchten 1980 - doi:10.2136/sssaj1980.03615995004400050002x
+#' as cited in Schmidt 1996 (ISBN 978-3-88009-062-0)
+#'
+#' @param THETA_S Maximum volumetric water content (0-100)
+#' @param THETA_R Minimum volumetric water content (0-100)
+#' @param Initmoist actual volumetric water content (0-100)
+#' @param alpha
+#' @param nordpol
 #' @return psimo
-#' @seealso
+#' @seealso alpha.E3D, nordpol.E3D, theta_s.E3D, theta_r.E3D
 #' @export
-#' @examples
-#'
 
 psimo.E3D <- function(THETA_S,THETA_R, INITMOIST, ALPHA,NORDPOL)
 {
