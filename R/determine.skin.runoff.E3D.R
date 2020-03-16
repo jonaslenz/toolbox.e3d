@@ -3,6 +3,7 @@
 #' This function models a rainfall-experiment plot in EROSION-3D.
 #' The calibration parameter skinfactor is determined that calculated cummulative runoff equals the measured value.
 #'
+#' @importFrom raster raster
 #' @export
 #' @examples
 #'
@@ -36,7 +37,7 @@ determine.skin.runoff.E3D <- function(Cl, Si, Sa, Corg, Bulk, Moist, CumRunoff, 
 
   write.landuse.E3D(POLY_ID = soils$POLY_ID,length = plotlength, path = paste0(path,"model/soil/"), filename = "landuse.asc")
 
-  write.rainfile.E3D(cbind.data.frame(time = c(0,(endmin-1)*60), intens = intensity), path, filename = "model/rain_e3d.csv")
+  write.rainfile.E3D(time = c(0,endmin*60), intens = c(intensity,0), path, filename = "model/rain_e3d.csv")
 
 
 
@@ -61,7 +62,7 @@ determine.skin.runoff.E3D <- function(Cl, Si, Sa, Corg, Bulk, Moist, CumRunoff, 
       if(ponding){system2("C:/Program Files (x86)/Erosion-3D_32-320/e3d", paste0('/c "',path,'model/run.par"'), wait=TRUE)}else{
       system2("C:/Program Files (x86)/Erosion-3D_32-320/e3d", paste0('/c "',path,'model/run_noponding.par"'), wait=TRUE)}
 
-      runoff <- raster(read.asciigrid(paste(path,"model/result/sum_q.asc", sep="")))[,1]*1000
+      runoff <- raster(paste(path,"model/result/sum_q.asc", sep=""))[,1]*1000
 
       skinlower <- soils$SKINFACTOR[Position(function(x){CumRunoff<x},runoff, right = TRUE)]
       skinupper <- soils$SKINFACTOR[Position(function(x){CumRunoff>x},runoff)]
