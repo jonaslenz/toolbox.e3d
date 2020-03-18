@@ -1,0 +1,110 @@
+[Relief_Hydro]
+Relief=C:\E3Dmodel\model\relief\
+DEM=C:\E3Dmodel\model\dem.asc
+stream=
+[Soil_landuse]
+Soil=C:\E3Dmodel\model\soil\
+[Result]
+Result=C:\E3Dmodel\model\result\
+[Meteo]
+Rain=C:\E3Dmodel\model\rain_e3d.csv
+Raindatatype=0
+WindDirection=
+WindDirectiondatatype=0
+WindSpeed=
+WindSpeeddatatype=0
+Zone=
+[General]
+Workspace=C:\Users\Jonas Lenz\Documents
+[SubModels]
+SnowModel=0
+LTSModel=0
+ChkdamModel=0
+[Erosion_model]
+kappa= 1.00000000000000E+0003
+max_conc= 3.00000000000000E+0002
+[Runoff_model]
+DelayRunoff=0
+NoRainNoInfil=0
+StorageCoeff= 1.00000000000000E+0000
+InternalInv=0
+Min_runoff_sum= 1.00000001168610E-0007
+[Infiltration_model]
+Ponding=1
+Save_infil=0
+DoInfilModel=1
+DoLayerModel=0
+HydrConductMeth=0
+PTFMeth=0
+RockFragmMeth=0
+GW_ksMeth=0
+TestPolygons=1
+TestIntervals=1440
+TestInvLength=60
+AdjustInitM=0
+reset_infil=1
+t_dry_trigger=3600
+rain_intens_trigger= 9.99999977648258E-0003
+t_rain_trigger=600
+[FrozenSoil]
+DoFrozenSoil=0
+Throughput= 0.00000000000000E+0000
+UnsatMethod=1
+[WatchCell]
+WatchRow=8
+WatchCol=8
+WatchMethod=0
+WatchCellList=
+WatchGrid=0
+[Meteo_options]
+pc_br= 1.00999999046326E+0000
+pc_ar= 9.99999977648258E-0003
+pc_bs= 1.02999997138977E+0000
+pc_as= 1.29999995231628E-0001
+[Relief options]
+SlopeCalc=1
+FlowRouting=1
+Resolution=-2
+Breaching=1
+OutputFiles=59
+Depressions=3
+Pval= 1.10000002384186E+0000
+dem_roundval=100
+dem_multi=1
+[Drainage network]
+CSA=80000
+burndepth= 3.00000011920929E-0001
+netmode=0
+[topography]
+runmodule=0
+n_azimuth=12
+horizon=0
+[flowdir]
+runmodule=0
+[flowacc]
+runmodule=0
+[xdnet]
+runmodule=0
+[streamorder]
+runmodule=0
+[streamcorr]
+runmodule=0
+corr_num=0
+corr_order=
+[xorder]
+runmodule=0
+minord=1
+maxord=6
+[flowtime]
+runmodule=0
+manning= 2.50000000000000E+0001
+qspende= 2.00000000000000E+0002
+fzmethode=1
+[catchments]
+runmodule=0
+maxtgnummer=32767
+tgmax=1
+[fdir_ext]
+runoption=0
+FlowRouting=2
+BreachLevel=100
