@@ -23,7 +23,7 @@ write.landuse.E3D <- function(POLY_ID = c(1,2,3),length=50, path, filename = "/m
 
 writeRaster(
   raster(nrows=rows, ncols=length, xmn=0, xmx=length, ymn=0, ymx=rows,crs="+notaCRS", vals=rep(POLY_ID, each=length)),
-  filename = paste0(path,filename),
+  filename = file.path(path,filename),
   format ="ascii",
   overwrite=TRUE,
   datatype = "INT2U"

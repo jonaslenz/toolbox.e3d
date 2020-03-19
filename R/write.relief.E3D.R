@@ -24,7 +24,7 @@ write.relief.E3D <- function(POLY_ID, length, slope, path, filename = "dem.asc")
 
 writeRaster(
   raster(nrows=rows, ncols=length, xmn=0, xmx=length, ymn=0, ymx=rows,crs="+notaCRS", vals=rep((1:length)*slope/100, times=rows)),
-  filename = paste0(path,filename),
+  filename = file.path(path,filename),
   format ="ascii",
   overwrite=TRUE
 )

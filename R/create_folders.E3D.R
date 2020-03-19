@@ -7,8 +7,9 @@
 #' @examples
 #' create_folders.E3D(path = "C:/E3Dmodel/", overwrite = TRUE)
 
-create_folders.E3D <- function(path = tmpDir(), overwrite = FALSE)
+create_folders.E3D <- function(path = tempdir(), overwrite = FALSE)
 {
-  unzip(zipfile= system.file("model.zip", package = "liberos"),exdir = paste0(path,"model"), overwrite = overwrite);
-  return(paste0(path,"model/"));
+  unzip(zipfile= system.file("model.zip", package = "liberos"),exdir = file.path(path,"model"), overwrite = overwrite);
+  change_settings.E3D(path,setpath = TRUE)
+  return(normalizePath(file.path(path,"model")));
 }

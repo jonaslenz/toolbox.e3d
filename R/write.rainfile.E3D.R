@@ -40,5 +40,5 @@ write.rainfile.E3D <- function(time, intens, path, date = "1990-01-01", filename
                    }else{intens[time==max(time)]}
                ))
   }
-  write.table(a,file = paste0(path,filename), row.names = FALSE, col.names = FALSE, sep = ",", quote = FALSE)
+  write.table(a,file = file.path(path,filename), row.names = FALSE, col.names = FALSE, sep = ",", quote = FALSE)
 }

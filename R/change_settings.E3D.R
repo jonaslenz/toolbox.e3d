@@ -17,7 +17,7 @@
 #' change_settings.E3D(path = "C:/E3Dmodel/", filename = "model/run22.par", module = c("Infiltration_model","Infiltration_model","Relief options"), setting = c("Ponding","DoLayerModel","Resolution"), value = c("0","1","-3"))
 #'
 
-change_settings.E3D <- function(path = NA, filename = "model/run.par", module, setting = NA, value = NA, setpath = FALSE)
+change_settings.E3D <- function(path = NA, filename = "model/run.par", module = NA, setting = NA, value = NA, setpath = FALSE)
 {
   standard_ini <- ini::read.ini(system.file("run.par", package = "liberos"))
 
@@ -31,12 +31,12 @@ change_settings.E3D <- function(path = NA, filename = "model/run.par", module, s
 
   if(setpath)
   {
-    standard_ini[["Meteo"]][["Rain"]] <- gsub("/", replacement = "\\\\", paste0(path,"model/rain_e3d.csv"))
-    standard_ini[["Relief_Hydro"]][["Relief"]] <- gsub("/", replacement = "\\\\", paste0(path,"model/relief/"))
-    standard_ini[["Relief_Hydro"]][["DEM"]] <- gsub("/", replacement = "\\\\", paste0(path,"model/dem.asc"))
-    standard_ini[["Soil_landuse"]][["Soil"]] <- gsub("/", replacement = "\\\\", paste0(path,"model/soil/"))
-    standard_ini[["Result"]][["Result"]] <- gsub("/", replacement = "\\\\", paste0(path,"model/result/"))
+    standard_ini[["Meteo"]][["Rain"]] <- normalizePath(file.path(path,"model/rain_e3d.csv"))
+    standard_ini[["Relief_Hydro"]][["Relief"]] <- paste0(normalizePath(file.path(path,"model/relief")),"\\")
+    standard_ini[["Relief_Hydro"]][["DEM"]] <- normalizePath(file.path(path,"model/dem.asc"))
+    standard_ini[["Soil_landuse"]][["Soil"]] <- paste0(normalizePath(file.path(path,"model/soil")),"\\")
+    standard_ini[["Result"]][["Result"]] <- paste0(normalizePath(file.path(path,"model/result")),"\\")
   }
 
-  ini::write.ini(standard_ini,filepath = paste0(path,filename))
+  ini::write.ini(standard_ini,filepath = file.path(path,filename))
 }

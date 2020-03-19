@@ -7,11 +7,11 @@
 #' @export
 #' @examples
 #'
-determine.skin.runoff.E3D <- function(Cl, Si, Sa, Corg, Bulk, Moist, CumRunoff, intensity, plotwidth, plotlength, slope, endmin, ponding =FALSE, simlines = 100, path = "C:/E3Dmodel/", silent=TRUE)
+determine.skin.runoff.E3D <- function(Cl, Si, Sa, Corg, Bulk, Moist, CumRunoff, intensity, plotwidth, plotlength, slope, endmin, ponding =FALSE, simlines = 100, path = tempdir(), silent=TRUE)
 {
   create_folders.E3D(path, overwrite = TRUE)
 
-  soils <- read.csv(paste0(path,"model/soil/soil_params.csv"))[1,]
+  soils <- read.csv(file.path(path,"model/soil/soil_params.csv"))[1,]
   soils$BLKDENSITY <- Bulk
   soils$CORG <- Corg
   soils$INITMOIST <- Moist
@@ -32,14 +32,14 @@ determine.skin.runoff.E3D <- function(Cl, Si, Sa, Corg, Bulk, Moist, CumRunoff, 
   soils[2:simlines,] <- soils[1,]
   soils$POLY_ID<- 1:simlines
 
-  write.relief.E3D(POLY_ID = soils$POLY_ID,plotlength,round(slope),paste0(path,"model/"))
-  system2("C:/Program Files (x86)/Erosion-3D_32-320/e3d", paste0('/r "',path,'model/run.par"'), wait=TRUE)
+  write.relief.E3D(POLY_ID = soils$POLY_ID,plotlength,round(slope),file.path(path,"model/"))
+  system2("C:/Program Files (x86)/Erosion-3D_32-320/e3d", paste0('/r "',normalizePath(file.path(path,"model/run.par")),'"'), wait=TRUE)
 
-  write.landuse.E3D(POLY_ID = soils$POLY_ID,length = plotlength, path = paste0(path,"model/soil/"), filename = "landuse.asc")
+  write.landuse.E3D(POLY_ID = soils$POLY_ID,length = plotlength, path = file.path(path,"model/soil/"), filename = "landuse.asc")
 
   write.rainfile.E3D(time = c(0,endmin*60), intens = c(intensity,0), path, filename = "model/rain_e3d.csv")
 
-
+  if(!ponding){change_settings.E3D(path, filename = "model/run.par", module = "Infiltration_model", setting = "Ponding", value = "0")}
 
   #iteration of Skinfaktor
   skinupper=100
@@ -57,12 +57,11 @@ determine.skin.runoff.E3D <- function(Cl, Si, Sa, Corg, Bulk, Moist, CumRunoff, 
       if(!silent){message(paste(i,":",skinlower,skinupper));}
       soils$SKINFACTOR <- 10^seq(log10(skinlower),log10(skinupper), length.out = simlines);
 
-      write.csv(soils,paste0(path,"model/soil/soil_params.csv"), row.names = FALSE, quote = FALSE)
+      write.csv(soils,file.path(path,"model/soil/soil_params.csv"), row.names = FALSE, quote = FALSE)
 
-      if(ponding){system2("C:/Program Files (x86)/Erosion-3D_32-320/e3d", paste0('/c "',path,'model/run.par"'), wait=TRUE)}else{
-      system2("C:/Program Files (x86)/Erosion-3D_32-320/e3d", paste0('/c "',path,'model/run_noponding.par"'), wait=TRUE)}
+      system2("C:/Program Files (x86)/Erosion-3D_32-320/e3d", paste0('/c "',normalizePath(file.path(path,"model/run.par")),'"'), wait=TRUE)
 
-      runoff <- raster(paste(path,"model/result/sum_q.asc", sep=""))[,1]*1000
+      runoff <- raster::raster(file.path(path,"model/result/sum_q.asc"))[,1]*1000
 
       skinlower <- soils$SKINFACTOR[Position(function(x){CumRunoff<x},runoff, right = TRUE)]
       skinupper <- soils$SKINFACTOR[Position(function(x){CumRunoff>x},runoff)]
@@ -71,7 +70,6 @@ determine.skin.runoff.E3D <- function(Cl, Si, Sa, Corg, Bulk, Moist, CumRunoff, 
       if(i>100) {print("no iteration"); break;} #end if not iterating
       if(skinupper/skinlower>0.999 && skinupper/skinlower<1.001) break; #end if iterating
       i=i+1;                                       #increase iteration counter
-
     }
   }
 
