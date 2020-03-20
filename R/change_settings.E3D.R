@@ -15,7 +15,7 @@
 
 change_settings.E3D <- function(path = NA, filename = "model/run.par", module = NA, setting = NA, value = NA, setpath = TRUE)
 {
-  standard_ini <- ini::read.ini(system.file("run.par", package = "liberos"))
+  standard_ini <- ini::read.ini(system.file("run.par", package = "toolbox.e3d"))
 
   if(!missing(setting) & !missing(value) & !missing(module) & length(module) ==length(setting) &length(setting)==length(value))
   {

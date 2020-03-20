@@ -10,7 +10,7 @@
 
 create_folders.E3D <- function(path = tempdir(), overwrite = FALSE)
 {
-  unzip(zipfile= system.file("model.zip", package = "liberos"),exdir = file.path(path,"model"), overwrite = overwrite);
+  unzip(zipfile= system.file("model.zip", package = "toolbox.e3d"),exdir = file.path(path,"model"), overwrite = overwrite);
   change_settings.E3D(path,setpath = TRUE)
   return(normalizePath(file.path(path,"model")));
 }

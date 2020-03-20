@@ -1,5 +1,5 @@
 library(testthat)
-library(liberos)
+library(toolbox.e3d)
 
 context("test parameter determination")
 
