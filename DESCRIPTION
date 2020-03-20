@@ -1,4 +1,4 @@
-Package: liberos
+Package: toolbox.e3d
 Type: Package
 Title: Toolbox for the soil erosion modelling tool EROSION-3D
 Version: 0.0.0.90
