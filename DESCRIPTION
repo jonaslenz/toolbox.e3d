@@ -5,7 +5,7 @@ Version: 0.0.0.90
 Author: Jonas Lenz
 Maintainer: Jonas Lenz <jonaspunktlenz@gmail.com>
 Description: Functions to work with the soil erosion modelling tool EROSION-3D from the command line.
-License: What license is it under?
+License: GPL-3
 Depends: R (>= 3.3.4)
 Encoding: UTF-8
 LazyData: true

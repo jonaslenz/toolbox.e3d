@@ -11,6 +11,7 @@
 #' @param date date to be written in file output
 #' @param timestep time resolution in seconds written to output file, at current stage E3D supports resolution in multiples of 60 seconds
 #' @return None, file is written
+#' @importFrom utils write.table
 #' @export
 #' @examples
 #' write.rainfile.E3D(time=c(0,60,120,240,600),intens=c(0.1,0.6,1.2,2.4,0), path = "C:/E3Dmodel/", date = "1990-10-27", filename = "/model/rain_e3d.csv", timestep = 60)

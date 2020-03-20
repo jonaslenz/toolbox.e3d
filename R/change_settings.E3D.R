@@ -9,12 +9,8 @@
 #' @param filename name of created file, should be *.par
 #' @param setpath boolean, shortcut to set working directory for E3D - if TRUE the path will be written as project path for rain, dem, soil and result
 #' @return none, *.par file is written
-#' @export
 #' @importFrom ini read.ini
 #' @importFrom ini write.ini
-#' @examples
-#' change_settings.E3D(path = "C:/E3Dmodel/", module = "Infiltration_model", setting = "Ponding", value = "1")
-#' change_settings.E3D(module = c("Infiltration_model","Infiltration_model","Relief options"), setting = c("Ponding","DoLayerModel","Resolution"), value = c("0","1","-3"))
 #'
 
 change_settings.E3D <- function(path = NA, filename = "model/run.par", module = NA, setting = NA, value = NA, setpath = TRUE)

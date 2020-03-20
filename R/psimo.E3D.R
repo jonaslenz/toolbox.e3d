@@ -5,7 +5,7 @@
 #'
 #' @param THETA_S Maximum volumetric water content (0-100)
 #' @param THETA_R Minimum volumetric water content (0-100)
-#' @param Initmoist actual volumetric water content (0-100)
+#' @param INITMOIST actual volumetric water content (0-100)
 #' @param ALPHA Van-Genuchten parameter
 #' @param NORDPOL Van-Genuchten parameter
 #' @return psimo

@@ -3,6 +3,7 @@
 #' @param path folder path in which file will be written
 #' @param overwrite boolean, TRUE allows overwriting of files
 #' @return file path to created folder structure
+#' @importFrom utils unzip
 #' @export
 #' @examples
 #' create_folders.E3D(path = "C:/E3Dmodel/", overwrite = TRUE)

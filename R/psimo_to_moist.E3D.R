@@ -8,6 +8,7 @@
 #' @param pF target pF value
 #' @param ALPHA Van-Genuchten parameter
 #' @param NORDPOL Van-Genuchten parameter
+#' @param digits integer, number of decimal digits
 #' @return moist
 #' @seealso psimo.E3D
 #' @export

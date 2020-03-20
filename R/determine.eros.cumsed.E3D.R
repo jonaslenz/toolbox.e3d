@@ -3,6 +3,23 @@
 #' This function calibrates parameter resistance to erosion that calculated cummulative sediment loss equals the measured value from a rainfall experiment.
 #' Therfore it models a rainfall-experiment plot using EROSION-3D.
 #'
+#' @param FCl numeric
+#' @param MCl numeric
+#' @param CCl numeric
+#' @param FSi numeric
+#' @param MSi numeric
+#' @param CSi numeric
+#' @param FSa numeric
+#' @param MSa numeric
+#' @param CSa numeric
+#'
+#' @param Corg numeric
+#' @param Bulk numeric
+#' @param Moist numeric
+#' @param Skin numeric
+#' @param Roughness numeric
+#' @param Cover numeric
+#'
 #' @param Soilloss numeric value, cummulative sediment loss in kg is the fitting target of this function
 #' @param intensity numeric value, a constant rainfall intensity during the experiment
 #' @param plotwidth numeric value, width of the experimental plot, CumRunoff will be normalized to one meter width using this parameter
@@ -14,8 +31,10 @@
 #' @param path path to modelling directory, defaul is a temporary directory
 #' @param silent logical, if TRUE skinfactor iteration steps will be written as message
 #' @importFrom raster raster
+#' @importFrom utils read.csv
 #' @export
-#' @examples determine.skin.runoff.E3D(FCl=5,MCl=10,CCl=15, FSi=10,MSi=20,CSi=10, FSa=15,MSa=10,CSa=5, Corg = 1.3, Bulk = 1300, Moist = 22, Skin = 0.757,Roughness=0.05, Cover = 20, Soilloss = 2, intensity = 0.5, plotwidth = 1, plotlength = 10, slope = 10, endmin = 30, ponding = TRUE, silent = FALSE)
+#' @examples determine.eros.cumsed.E3D(FCl=5,MCl=10,CCl=15, FSi=10,MSi=20,CSi=10, FSa=15,MSa=10,CSa=5, Corg = 1.3, Bulk = 1300, Moist = 22, Skin = 0.005,Roughness=0.05, Cover = 20, Soilloss = 1, intensity = 0.5, plotwidth = 1, plotlength = 10, slope = 10, endmin = 30, ponding = TRUE)
+#' @examples determine.eros.cumsed.E3D(FCl=5,MCl=10,CCl=15, FSi=10,MSi=20,CSi=10, FSa=15,MSa=10,CSa=5, Corg = 1.3, Bulk = 1300, Moist = 22, Skin = 0.005,Roughness=0.05, Cover = 20, Soilloss = 1, intensity = 0.5, plotwidth = 1, plotlength = 10, slope = 10, endmin = 30, ponding = FALSE)
 #'
 determine.eros.cumsed.E3D <- function(FCl,MCl,CCl, FSi,MSi,CSi, FSa,MSa,CSa, Corg, Bulk, Moist, Skin, Roughness, Cover, Soilloss, intensity, plotwidth, plotlength, slope, endmin, ponding =FALSE, simlines = 100, path = tempdir(), silent=TRUE)
 {
@@ -65,7 +84,7 @@ determine.eros.cumsed.E3D <- function(FCl,MCl,CCl, FSi,MSi,CSi, FSa,MSa,CSa, Cor
       if(!silent){message(paste(i,":",eroslower,erosupper));}
       soils$ERODIBIL <- 10^seq(log10(eroslower),log10(erosupper), length.out = simlines);
 
-      write.csv(soils,file.path(path,"model/soil/soil_params.csv"), row.names = FALSE, quote = FALSE)
+      utils::write.csv(soils,file.path(path,"model/soil/soil_params.csv"), row.names = FALSE, quote = FALSE)
 
       system2("C:/Program Files (x86)/Erosion-3D_32-320/e3d", paste0('/c "',normalizePath(file.path(path,"model/run.par")),'"'), wait=TRUE)
 

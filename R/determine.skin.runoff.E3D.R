@@ -3,6 +3,14 @@
 #' This function calibrates parameter skinfactor that calculated cummulative runoff equals the measured value from a rainfall experiment.
 #' Therfore it models a rainfall-experiment plot using EROSION-3D.
 #'
+#' @param Cl numeric
+#' @param Si numeric
+#' @param Sa numeric
+#'
+#' @param Corg numeric
+#' @param Bulk numeric
+#' @param Moist numeric
+#'
 #' @param CumRunoff numeric value, cummulative runoff is the fitting target of this function
 #' @param intensity numeric value, a constant rainfall intensity during the experiment
 #' @param plotwidth numeric value, width of the experimental plot, CumRunoff will be normalized to one meter width using this parameter
@@ -14,6 +22,7 @@
 #' @param path path to modelling directory, defaul is a temporary directory
 #' @param silent logical, if TRUE skinfactor iteration steps will be written as message
 #' @importFrom raster raster
+#' @importFrom utils read.csv
 #' @export
 #' @examples determine.skin.runoff.E3D(Cl = 30, Si = 40, Sa = 30, Corg = 1.3, Bulk = 1300, Moist = 22, CumRunoff = 100, intensity = 0.5, plotwidth = 1, plotlength = 10, slope = 10, endmin = 30, ponding = TRUE, silent = FALSE)
 #'
@@ -67,7 +76,7 @@ determine.skin.runoff.E3D <- function(Cl, Si, Sa, Corg, Bulk, Moist, CumRunoff, 
       if(!silent){message(paste(i,":",skinlower,skinupper));}
       soils$SKINFACTOR <- 10^seq(log10(skinlower),log10(skinupper), length.out = simlines);
 
-      write.csv(soils,file.path(path,"model/soil/soil_params.csv"), row.names = FALSE, quote = FALSE)
+      utils::write.csv(soils,file.path(path,"model/soil/soil_params.csv"), row.names = FALSE, quote = FALSE)
 
       system2("C:/Program Files (x86)/Erosion-3D_32-320/e3d", paste0('/c "',normalizePath(file.path(path,"model/run.par")),'"'), wait=TRUE)
 
