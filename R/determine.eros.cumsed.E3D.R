@@ -38,6 +38,8 @@
 #'
 determine.eros.cumsed.E3D <- function(FCl,MCl,CCl, FSi,MSi,CSi, FSa,MSa,CSa, Corg, Bulk, Moist, Skin, Roughness, Cover, Soilloss, intensity, plotwidth, plotlength, slope, endmin, ponding =FALSE, simlines = 100, path = tempdir(), silent=TRUE)
 {
+  if(check_setup.E3D()!=0){stop("cannot access e3d instalation")}
+
   create_folders.E3D(path, overwrite = TRUE)
 
   soils <- read.csv(file.path(path,"model/soil/soil_params.csv"))[1,]
@@ -65,7 +67,7 @@ determine.eros.cumsed.E3D <- function(FCl,MCl,CCl, FSi,MSi,CSi, FSa,MSa,CSa, Cor
   soils$POLY_ID<- 1:simlines
 
   write.relief.E3D(POLY_ID = soils$POLY_ID,plotlength,round(slope),file.path(path,"model/"))
-  system2("C:/Program Files (x86)/Erosion-3D_32-320/e3d", paste0('/r "',normalizePath(file.path(path,"model/run.par")),'"'), wait=TRUE)
+  system2("e3d", paste0('/r "',normalizePath(file.path(path,"model/run.par")),'"'), wait=TRUE)
 
   write.landuse.E3D(POLY_ID = soils$POLY_ID,length = plotlength, path = file.path(path,"model/soil/"), filename = "landuse.asc")
 
@@ -86,7 +88,7 @@ determine.eros.cumsed.E3D <- function(FCl,MCl,CCl, FSi,MSi,CSi, FSa,MSa,CSa, Cor
 
       utils::write.csv(soils,file.path(path,"model/soil/soil_params.csv"), row.names = FALSE, quote = FALSE)
 
-      system2("C:/Program Files (x86)/Erosion-3D_32-320/e3d", paste0('/c "',normalizePath(file.path(path,"model/run.par")),'"'), wait=TRUE)
+      system2("e3d", paste0('/c "',normalizePath(file.path(path,"model/run.par")),'"'), wait=TRUE)
 
       sed <- raster::raster(file.path(path,"model/result/sum_sedvol.asc"))[,1]
       runoff <- raster::raster(file.path(path,"model/result/sum_q.asc"))[,1]*1000
