@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_folders.E3D.R
 \name{create_folders.E3D}
 \alias{create_folders.E3D}
-\title{creates folder structure including a basic E3D modell}
+\title{creates folder structure including a basic E3D model}
 \usage{
 create_folders.E3D(path = tempdir(), overwrite = FALSE)
 }
@@ -15,7 +15,7 @@ create_folders.E3D(path = tempdir(), overwrite = FALSE)
 file path to created folder structure
 }
 \description{
-creates folder structure including a basic E3D modell
+creates folder structure including a basic E3D model
 }
 \examples{
 create_folders.E3D(path = "C:/E3Dmodel/", overwrite = TRUE)

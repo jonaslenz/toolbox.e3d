@@ -7,7 +7,7 @@
 #' @param value character vector, defines value to be changed to
 #' @param path folder path in which file will be written
 #' @param filename name of created file, should be *.par
-#' @param setpath boolean, shortcut to set working directory for E3D - if TRUE the path will be written as project path for rain, dem, soil and result
+#' @param setpath boolean, shortcut to set working directory for E3D - if TRUE the path will be written as project path for rain, DEM, soil and result
 #' @return none, *.par file is written
 #' @importFrom ini read.ini
 #' @importFrom ini write.ini

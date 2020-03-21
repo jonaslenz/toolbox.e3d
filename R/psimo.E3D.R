@@ -1,6 +1,6 @@
 #' calculate  matrix potential
 #'
-#' calculates matrix potential PsimO [hPa] according to Van-Genuchten 1980 - doi:10.2136/sssaj1980.03615995004400050002x
+#' calculates matrix potential psimO [hPa] according to Van-Genuchten 1980 - doi:10.2136/sssaj1980.03615995004400050002x
 #' as cited in Schmidt 1996 (ISBN 978-3-88009-062-0)
 #'
 #' @param THETA_S Maximum volumetric water content (0-100)

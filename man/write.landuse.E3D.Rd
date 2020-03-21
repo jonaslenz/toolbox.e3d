@@ -2,7 +2,7 @@
 % Please edit documentation in R/write.landuse.E3D.R
 \name{write.landuse.E3D}
 \alias{write.landuse.E3D}
-\title{Write an synthetic EROSION-3D landclassification input file}
+\title{Write an synthetic EROSION-3D land classification input file}
 \usage{
 write.landuse.E3D(POLY_ID = c(1, 2, 3), length = 50, path,
   filename = "/model/soil/landuse.asc")
@@ -20,8 +20,8 @@ write.landuse.E3D(POLY_ID = c(1, 2, 3), length = 50, path,
 None, file is written
 }
 \description{
-This function writes a landuse/landcover file for simultaneously modelling of EROSION-2D slopes in EROSION-3D.
-One row represents one EROSION-2D slope, when flow routing is set to one neighbour in EROSION-3D.
+This function writes a land-use/land-cover file for simultaneously modeling of EROSION-2D slopes in EROSION-3D.
+One row represents one EROSION-2D slope, when flow routing is set to one neighbor in EROSION-3D.
 }
 \examples{
 write.landuse.E3D(path = "C:/E3Dmodel/")

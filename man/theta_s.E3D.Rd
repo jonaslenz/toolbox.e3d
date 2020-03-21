@@ -7,9 +7,9 @@
 theta_s.E3D(Cl, Bulk)
 }
 \arguments{
-\item{Cl}{Gravimetrical content of clay particles in fine soil (0-100)}
+\item{Cl}{Gravimetric content of clay particles in fine soil (0-100)}
 
-\item{Bulk}{bulkdensity of dry soil [kg/m^3]}
+\item{Bulk}{bulk density of dry soil [kg/m^3]}
 }
 \value{
 THETA_S

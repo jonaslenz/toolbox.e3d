@@ -7,8 +7,9 @@
 check_setup.E3D()
 }
 \value{
-numeric, exit code of command line
+none
 }
 \description{
-checks, if e3d can be run from command line
+checks, if e3d is available from global %PATH% or can be found in registry.
+If registry entry is found, it will be added to PATH for this session.
 }

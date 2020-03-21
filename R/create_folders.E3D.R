@@ -1,4 +1,4 @@
-#' creates folder structure including a basic E3D modell
+#' creates folder structure including a basic E3D model
 #'
 #' @param path folder path in which file will be written
 #' @param overwrite boolean, TRUE allows overwriting of files

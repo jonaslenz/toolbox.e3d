@@ -1,7 +1,7 @@
 #' Skinfactor determination
 #'
-#' This function calibrates parameter skinfactor that calculated cummulative runoff equals the measured value from a rainfall experiment.
-#' Therfore it models a rainfall-experiment plot using EROSION-3D.
+#' This function calibrates parameter skinfactor that calculated cumulative runoff equals the measured value from a rainfall experiment.
+#' Therefore it models a rainfall-experiment plot using EROSION-3D.
 #'
 #' @param Cl numeric
 #' @param Si numeric
@@ -11,15 +11,15 @@
 #' @param Bulk numeric
 #' @param Moist numeric
 #'
-#' @param CumRunoff numeric value, cummulative runoff is the fitting target of this function
+#' @param CumRunoff numeric value, cumulative runoff is the fitting target of this function
 #' @param intensity numeric value, a constant rainfall intensity during the experiment
 #' @param plotwidth numeric value, width of the experimental plot, CumRunoff will be normalized to one meter width using this parameter
-#' @param plotlength integer value, length of experimental plot, needs to be an interger due to spatial resolution of 1 meter in E3D
+#' @param plotlength integer value, length of experimental plot, needs to be an integer due to spatial resolution of 1 meter in E3D
 #' @param slope integer value, mean slope of experimental plot in percent
 #' @param endmin integer value, duration of rainfall experiment in full minutes rainfall was applied.
 #' @param ponding logical TRUE means ponding option is used, FALSE - is not used in E3D, ponding limits amount of infiltrating water to available water
-#' @param simlines integer value, number of parallel computated plots, higher numbers decrease number of iteration steps with E3D, but increases number of write-read operations
-#' @param path path to modelling directory, defaul is a temporary directory
+#' @param simlines integer value, number of parallel calculated plots, higher numbers decrease number of iteration steps with E3D, but increases number of write-read operations
+#' @param path path to modeling directory, default is a temporary directory
 #' @param silent logical, if TRUE skinfactor iteration steps will be written as message
 #' @importFrom raster raster
 #' @importFrom utils read.csv

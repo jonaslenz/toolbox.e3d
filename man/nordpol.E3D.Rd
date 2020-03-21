@@ -7,16 +7,16 @@
 nordpol.E3D(Sa, Cl)
 }
 \arguments{
-\item{Sa}{Gravimetrical content of sand particles in fine soil (0-100)}
+\item{Sa}{Gravimetric content of sand particles in fine soil (0-100)}
 
-\item{Cl}{Gravimetrical content of clay particles in fine soil (0-100)}
+\item{Cl}{Gravimetric content of clay particles in fine soil (0-100)}
 }
 \value{
 n
 }
 \description{
 calculates n-parameter according to Vereecken et. al 1989 (doi:10.1097/00010694-198912000-00001)
-for Van-Genuchten soil-water retention curve (Van-genuchten 1980 - doi:10.2136/sssaj1980.03615995004400050002x)
+for Van-Genuchten soil-water retention curve (Van-Genuchten 1980 - doi:10.2136/sssaj1980.03615995004400050002x)
 -> first equation in Table 7 for log(n)
 }
 \examples{

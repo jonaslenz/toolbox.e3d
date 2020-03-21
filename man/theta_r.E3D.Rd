@@ -7,9 +7,9 @@
 theta_r.E3D(Cl, Corg)
 }
 \arguments{
-\item{Cl}{Gravimetrical content of clay particles in fine soil (0-100)}
+\item{Cl}{Gravimetric content of clay particles in fine soil (0-100)}
 
-\item{Corg}{Gravimetrical content of organic bound carbon in fine soil (0-100)}
+\item{Corg}{Gravimetric content of organic bound carbon in fine soil (0-100)}
 }
 \value{
 THETA_R
