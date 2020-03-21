@@ -21,13 +21,13 @@ determine.skin.runoff.E3D(Cl, Si, Sa, Corg, Bulk, Moist, CumRunoff,
 
 \item{Moist}{numeric}
 
-\item{CumRunoff}{numeric value, cummulative runoff is the fitting target of this function}
+\item{CumRunoff}{numeric value, cumulative runoff is the fitting target of this function}
 
 \item{intensity}{numeric value, a constant rainfall intensity during the experiment}
 
 \item{plotwidth}{numeric value, width of the experimental plot, CumRunoff will be normalized to one meter width using this parameter}
 
-\item{plotlength}{integer value, length of experimental plot, needs to be an interger due to spatial resolution of 1 meter in E3D}
+\item{plotlength}{integer value, length of experimental plot, needs to be an integer due to spatial resolution of 1 meter in E3D}
 
 \item{slope}{integer value, mean slope of experimental plot in percent}
 
@@ -35,15 +35,15 @@ determine.skin.runoff.E3D(Cl, Si, Sa, Corg, Bulk, Moist, CumRunoff,
 
 \item{ponding}{logical TRUE means ponding option is used, FALSE - is not used in E3D, ponding limits amount of infiltrating water to available water}
 
-\item{simlines}{integer value, number of parallel computated plots, higher numbers decrease number of iteration steps with E3D, but increases number of write-read operations}
+\item{simlines}{integer value, number of parallel calculated plots, higher numbers decrease number of iteration steps with E3D, but increases number of write-read operations}
 
-\item{path}{path to modelling directory, defaul is a temporary directory}
+\item{path}{path to modeling directory, default is a temporary directory}
 
 \item{silent}{logical, if TRUE skinfactor iteration steps will be written as message}
 }
 \description{
-This function calibrates parameter skinfactor that calculated cummulative runoff equals the measured value from a rainfall experiment.
-Therfore it models a rainfall-experiment plot using EROSION-3D.
+This function calibrates parameter skinfactor that calculated cumulative runoff equals the measured value from a rainfall experiment.
+Therefore it models a rainfall-experiment plot using EROSION-3D.
 }
 \examples{
 determine.skin.runoff.E3D(Cl = 30, Si = 40, Sa = 30, Corg = 1.3, Bulk = 1300, Moist = 22, CumRunoff = 100, intensity = 0.5, plotwidth = 1, plotlength = 10, slope = 10, endmin = 30, ponding = TRUE, silent = FALSE)

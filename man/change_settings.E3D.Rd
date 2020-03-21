@@ -18,7 +18,7 @@ change_settings.E3D(path = NA, filename = "model/run.par",
 
 \item{value}{character vector, defines value to be changed to}
 
-\item{setpath}{boolean, shortcut to set working directory for E3D - if TRUE the path will be written as project path for rain, dem, soil and result}
+\item{setpath}{boolean, shortcut to set working directory for E3D - if TRUE the path will be written as project path for rain, DEM, soil and result}
 }
 \value{
 none, *.par file is written

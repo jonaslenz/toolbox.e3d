@@ -1,8 +1,8 @@
-#' Write an EROSION-3D rainintensity input file
+#' Write an EROSION-3D rainfall intensity input file
 #'
 #' This function writes a rainfall intensity input file, which can be used as input in EROSION-3D.
 #' Rainfall intensity value in mm/min is valid from corresponding timestamp.
-#' Last timestamp defines starting time of last intervall of timestep length.
+#' Last timestamp defines starting time of last interval of timestep length.
 #'
 #' @param time numeric vector, containing timestamps in seconds when intensity changes, must be multiple of parameter timestep
 #' @param intens numeric vector, gives rainfall intensity value valid from corresponding timestamp in mm/min

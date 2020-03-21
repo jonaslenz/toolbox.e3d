@@ -21,8 +21,8 @@ write.relief.E3D(POLY_ID, length, slope, path, filename = "dem.asc")
 None, file is written
 }
 \description{
-This function writes a relief file for simultaneously modelling of independent hillslopes (EROSION-2D) in EROSION-3D.
-One row represents one EROSION-2D slope, when flow routing is set to one neighbour in EROSION-3D.
+This function writes a relief file for simultaneously modeling of independent hill slopes (EROSION-2D) in EROSION-3D.
+One row represents one EROSION-2D slope, when flow routing is set to one neighbor in EROSION-3D.
 }
 \examples{
 write.relief.E3D(POLY_ID = c(1,2,3),length = 50,slope = 11, path = "C:/E3Dmodel/", filename = "dem.asc")

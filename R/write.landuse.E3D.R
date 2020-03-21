@@ -1,7 +1,7 @@
-#' Write an synthetic EROSION-3D landclassification input file
+#' Write an synthetic EROSION-3D land classification input file
 #'
-#' This function writes a landuse/landcover file for simultaneously modelling of EROSION-2D slopes in EROSION-3D.
-#' One row represents one EROSION-2D slope, when flow routing is set to one neighbour in EROSION-3D.
+#' This function writes a land-use/land-cover file for simultaneously modeling of EROSION-2D slopes in EROSION-3D.
+#' One row represents one EROSION-2D slope, when flow routing is set to one neighbor in EROSION-3D.
 #'
 #' @param POLY_ID numeric vector, number of elements defines columns of created relief file. Refers to POLY_ID in soil_params.csv of E3D.
 #' @param length numeric value, defining slope length in whole meters
