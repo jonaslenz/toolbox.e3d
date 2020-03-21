@@ -7,7 +7,7 @@
 check_setup.E3D <- function()
 {
   old_PATH <- Sys.getenv("PATH")
-  if(!grepl("Erosion-3D",old_PATH))
+  if(!grepl("Erosion",old_PATH))
   {
     message("e3d not found in %PATH% - checking for instalation in registry and adding to %PATH% for this session")
     # get installation path
@@ -15,7 +15,7 @@ check_setup.E3D <- function()
     if(is.character(aa)){
       aa <- aa[grep("InstallDir",aa)]
       instdir <- substr(aa,regexec(":",aa)[[1]][1]-1,nchar(aa))
-      Sys.setenv(PATH = paste(old_PATH, instdir, sep = ";"))
+      Sys.setenv(PATH = paste(old_PATH, instdir[1], sep = ";"))
     }else{stop("Could not find installed version of EROSION-3D in Registry. Please check instalation and run again or add e3d to %PATH% manually.")}
 
     message(paste("Please consider adding e3d instalation directory (",instdir,") to %PATH% in system environment to save time at this step."))
