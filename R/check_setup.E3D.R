@@ -11,7 +11,7 @@ check_setup.E3D <- function()
   {
     message("e3d not found in %PATH% - checking for instalation in registry and adding to %PATH% for this session")
     # get installation path
-    aa <- system2("reg", "query HKLM\\Software\\ /s /f Erosion-3D /k /v InstallDir", stdout = TRUE)
+    aa <- system2("reg", "query HKLM\\Software\\ /s /f Erosion-3D_32 /k /e /v InstallDir", stdout = TRUE)
     if(is.character(aa)){
       aa <- aa[grep("InstallDir",aa)]
       instdir <- substr(aa,regexec(":",aa)[[1]][1]-1,nchar(aa))
