@@ -4,8 +4,12 @@
 \alias{write.landuse.E3D}
 \title{Write an synthetic EROSION-3D land classification input file}
 \usage{
-write.landuse.E3D(POLY_ID = c(1, 2, 3), length = 50, path,
-  filename = "/model/soil/landuse.asc")
+write.landuse.E3D(
+  POLY_ID = c(1, 2, 3),
+  length = 50,
+  path,
+  filename = "/model/landuse.asc"
+)
 }
 \arguments{
 \item{POLY_ID}{numeric vector, number of elements defines columns of created relief file. Refers to POLY_ID in soil_params.csv of E3D.}

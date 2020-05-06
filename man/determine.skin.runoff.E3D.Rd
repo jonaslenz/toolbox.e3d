@@ -4,9 +4,24 @@
 \alias{determine.skin.runoff.E3D}
 \title{Skinfactor determination}
 \usage{
-determine.skin.runoff.E3D(Cl, Si, Sa, Corg, Bulk, Moist, CumRunoff,
-  intensity, plotwidth, plotlength, slope, endmin, ponding = FALSE,
-  simlines = 100, path = tempdir(), silent = TRUE)
+determine.skin.runoff.E3D(
+  Cl,
+  Si,
+  Sa,
+  Corg,
+  Bulk,
+  Moist,
+  CumRunoff,
+  intensity,
+  plotwidth,
+  plotlength,
+  slope,
+  endmin,
+  ponding = FALSE,
+  simlines = 100,
+  path = tempdir(),
+  silent = TRUE
+)
 }
 \arguments{
 \item{Cl}{numeric}

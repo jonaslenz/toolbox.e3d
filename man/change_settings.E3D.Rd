@@ -4,8 +4,14 @@
 \alias{change_settings.E3D}
 \title{change model settings for E3D}
 \usage{
-change_settings.E3D(path = NA, filename = "model/run.par",
-  module = NA, setting = NA, value = NA, setpath = TRUE)
+change_settings.E3D(
+  path = NA,
+  filename = "model/run.par",
+  module = NA,
+  setting = NA,
+  value = NA,
+  setpath = TRUE
+)
 }
 \arguments{
 \item{path}{folder path in which file will be written}

@@ -4,6 +4,17 @@ DEM=C:\E3Dmodel\model\dem.asc
 stream=
 [Soil_landuse]
 Soil=C:\E3Dmodel\model\soil\
+rdb_lut=
+rdb_dat=C:\E3Dmodel\model\soil_params.csv
+rdb_grd=C:\E3Dmodel\model\landuse.asc
+ras_rau=
+ras_ero=
+ras_cover=
+ras_texture=
+ras_density=
+ras_corg=
+ras_iwc=
+ras_skin=
 [Result]
 Result=C:\E3Dmodel\model\result\
 [Meteo]

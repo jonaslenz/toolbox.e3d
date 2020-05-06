@@ -4,10 +4,33 @@
 \alias{determine.eros.cumsed.E3D}
 \title{resistance to erosion determination}
 \usage{
-determine.eros.cumsed.E3D(FCl, MCl, CCl, FSi, MSi, CSi, FSa, MSa, CSa,
-  Corg, Bulk, Moist, Skin, Roughness, Cover, Soilloss, intensity,
-  plotwidth, plotlength, slope, endmin, ponding = FALSE,
-  simlines = 100, path = tempdir(), silent = TRUE)
+determine.eros.cumsed.E3D(
+  FCl,
+  MCl,
+  CCl,
+  FSi,
+  MSi,
+  CSi,
+  FSa,
+  MSa,
+  CSa,
+  Corg,
+  Bulk,
+  Moist,
+  Skin,
+  Roughness,
+  Cover,
+  Soilloss,
+  intensity,
+  plotwidth,
+  plotlength,
+  slope,
+  endmin,
+  ponding = FALSE,
+  simlines = 100,
+  path = tempdir(),
+  silent = TRUE
+)
 }
 \arguments{
 \item{FCl}{numeric}

@@ -31,6 +31,8 @@ change_settings.E3D <- function(path = NA, filename = "model/run.par", module = 
     standard_ini[["Relief_Hydro"]][["Relief"]] <- paste0(normalizePath(file.path(path,"model/relief")),"\\")
     standard_ini[["Relief_Hydro"]][["DEM"]] <- normalizePath(file.path(path,"model/dem.asc"))
     standard_ini[["Soil_landuse"]][["Soil"]] <- paste0(normalizePath(file.path(path,"model/soil")),"\\")
+    standard_ini[["Soil_landuse"]][["rdb_dat"]] <- paste0(normalizePath(file.path(path,"model/soil_params.csv")))
+    standard_ini[["Soil_landuse"]][["rdb_grd"]] <- paste0(normalizePath(file.path(path,"model/landuse.asc")))
     standard_ini[["Result"]][["Result"]] <- paste0(normalizePath(file.path(path,"model/result")),"\\")
   }
 

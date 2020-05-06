@@ -4,8 +4,14 @@
 \alias{write.rainfile.E3D}
 \title{Write an EROSION-3D rainfall intensity input file}
 \usage{
-write.rainfile.E3D(time, intens, path, date = "1990-01-01",
-  filename = "/model/rain_e3d.csv", timestep = 60)
+write.rainfile.E3D(
+  time,
+  intens,
+  path,
+  date = "1990-01-01",
+  filename = "/model/rain_e3d.csv",
+  timestep = 60
+)
 }
 \arguments{
 \item{time}{numeric vector, containing timestamps in seconds when intensity changes, must be multiple of parameter timestep}

@@ -14,7 +14,7 @@
 #' @examples
 #' write.landuse.E3D(path = "C:/E3Dmodel/")
 
-write.landuse.E3D <- function(POLY_ID = c(1,2,3),length=50, path, filename = "/model/soil/landuse.asc")
+write.landuse.E3D <- function(POLY_ID = c(1,2,3),length=50, path, filename = "/model/landuse.asc")
 {
     #EROSION-3D requires at least two rows
   if (length(POLY_ID) < 2){POLY_ID <- rep(POLY_ID, each=2);}
