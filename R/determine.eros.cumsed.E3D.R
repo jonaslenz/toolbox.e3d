@@ -103,9 +103,9 @@ determine.eros.cumsed.E3D <- function(FCl,MCl,CCl, FSi,MSi,CSi, FSa,MSa,CSa, Cor
       {
         if(!file.exists(file.path(path,"model/result/sum_sedvol.sdat")))
         {stop("Can't read result set. Please check that standard output files in E3D are either *.asc or *.sdat.")}else
-        { sed <- raster::raster(file.path(path,"model/result/sum_sedvol.sdat"))[,1]*1000 }
+        { sed <- raster::raster(file.path(path,"model/result/sum_sedvol.sdat"))[,1]}
       }else
-      { sed <- raster::raster(file.path(path,"model/result/sum_sedvol.asc"))[,1]*1000 }
+      { sed <- raster::raster(file.path(path,"model/result/sum_sedvol.asc"))[,1]}
 
       if(runoff[1]<=0)
       {message("No Runoff - No Soilloss"); return(NA);}
