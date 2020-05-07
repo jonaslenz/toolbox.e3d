@@ -4,7 +4,14 @@
 \alias{write.relief.E3D}
 \title{Write an synthetic EROSION-3D relief input file}
 \usage{
-write.relief.E3D(POLY_ID, length, slope, path, filename = "dem.asc")
+write.relief.E3D(
+  POLY_ID,
+  length,
+  slope,
+  path,
+  filename = "dem.asc",
+  resolution = 1
+)
 }
 \arguments{
 \item{POLY_ID}{numeric vector, number of elements defines columns of created relief file. Refers to POLY_ID in soil_params.csv of E3D.}
@@ -16,6 +23,8 @@ write.relief.E3D(POLY_ID, length, slope, path, filename = "dem.asc")
 \item{path}{folder path in which file will be written}
 
 \item{filename}{name of created file}
+
+\item{resolution}{set spatial resoultion}
 }
 \value{
 None, file is written

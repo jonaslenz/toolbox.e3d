@@ -8,7 +8,8 @@ write.landuse.E3D(
   POLY_ID = c(1, 2, 3),
   length = 50,
   path,
-  filename = "/model/landuse.asc"
+  filename = "/model/landuse.asc",
+  resolution = 1
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ write.landuse.E3D(
 \item{path}{folder path in which file will be written}
 
 \item{filename}{name of created file}
+
+\item{resolution}{set spatial resoultion}
 }
 \value{
 None, file is written

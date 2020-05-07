@@ -8,6 +8,7 @@
 #' @param slope numeric value, defining slope inclination in whole percent
 #' @param path folder path in which file will be written
 #' @param filename name of created file
+#' @param resolution set spatial resoultion
 #' @return None, file is written
 #' @importFrom raster writeRaster
 #' @importFrom raster raster
@@ -15,15 +16,16 @@
 #' @examples
 #' write.relief.E3D(POLY_ID = c(1,2,3),length = 50,slope = 11, path = "C:/E3Dmodel/", filename = "dem.asc")
 
-write.relief.E3D <- function(POLY_ID, length, slope, path, filename = "dem.asc")
+write.relief.E3D <- function(POLY_ID, length, slope, path, filename = "dem.asc", resolution = 1)
 {
   #EROSION-3D requires at least two rows
   if (length(POLY_ID) < 2){POLY_ID <- rep(POLY_ID, each=2);}
+  if(!(length%%resolution==0 || abs((length%%resolution)/resolution-1) < 0.00001)){stop("length must be a multiple of resolution (default resolution = 1).")}
 
   rows <- length(POLY_ID)
 
 writeRaster(
-  raster(nrows=rows, ncols=length, xmn=0, xmx=length, ymn=0, ymx=rows,crs="+notaCRS", vals=rep((1:length)*slope/100, times=rows)),
+  raster(resolution = resolution, xmn=0, xmx=length, ymn=0, ymx=rows*resolution,crs="+notaCRS", vals=rep((1:(length/resolution))*slope/100*resolution, times=rows)),
   filename = file.path(path,filename),
   format ="ascii",
   overwrite=TRUE

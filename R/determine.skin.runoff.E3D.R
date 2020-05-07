@@ -56,7 +56,9 @@ determine.skin.runoff.E3D <- function(Cl, Si, Sa, Corg, Bulk, Moist, CumRunoff, 
   write.relief.E3D(POLY_ID = soils$POLY_ID,plotlength,round(slope),file.path(path,"model/"))
   system2("e3d", paste0('/r "',normalizePath(file.path(path,"model/run.par")),'"'), wait=TRUE)
 
-  write.landuse.E3D(POLY_ID = soils$POLY_ID,length = plotlength, path = file.path(path,"model/soil/"), filename = "landuse.asc")
+  write.landuse.E3D(POLY_ID = soils$POLY_ID,length = plotlength, path = file.path(path,"model/"), filename = "landuse.asc")
+  utils::write.csv(soils,file.path(path,"model/soil_params.csv"), row.names = FALSE, quote = FALSE)
+  system2("e3d", paste0('/s "',normalizePath(file.path(path,"model/run.par")),'"'), wait=TRUE)
 
   write.rainfile.E3D(time = c(0,endmin*60), intens = c(intensity,0), path, filename = "model/rain_e3d.csv")
 
