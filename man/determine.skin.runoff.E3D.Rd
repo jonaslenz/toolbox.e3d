@@ -20,7 +20,8 @@ determine.skin.runoff.E3D(
   ponding = FALSE,
   simlines = 100,
   path = tempdir(),
-  silent = TRUE
+  silent = TRUE,
+  version = "3.2"
 )
 }
 \arguments{
@@ -55,6 +56,8 @@ determine.skin.runoff.E3D(
 \item{path}{path to modeling directory, default is a temporary directory}
 
 \item{silent}{logical, if TRUE skinfactor iteration steps will be written as message}
+
+\item{version}{character, default is "3.2" which is actual official released version, other values are assuming version with implemented soil set creation /s}
 }
 \description{
 This function calibrates parameter skinfactor that calculated cumulative runoff equals the measured value from a rainfall experiment.

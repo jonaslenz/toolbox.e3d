@@ -30,7 +30,8 @@ determine.eros.cumsed.E3D(
   simlines = 100,
   path = tempdir(),
   silent = TRUE,
-  resolution = 1
+  resolution = 1,
+  version = "3.2"
 )
 }
 \arguments{
@@ -85,6 +86,8 @@ determine.eros.cumsed.E3D(
 \item{silent}{logical, if TRUE skinfactor iteration steps will be written as message}
 
 \item{resolution}{set spatial resoultion}
+
+\item{version}{character, default is "3.2" which is actual official released version, other values are assuming version with implemented soil set creation /s}
 }
 \description{
 This function calibrates parameter resistance to erosion that calculated cumulative sediment loss equals the measured value from a rainfall experiment.
