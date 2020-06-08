@@ -9,6 +9,7 @@
 
 get_version.E3D <- function()
 {
+  if(check_setup.E3D()!=0){stop("cannot access e3d instalation")}
   path = create_folders.E3D(path = paste0(tempdir(),"\\version"), overwrite = TRUE)
   system2("e3d", paste0('/r "',normalizePath(file.path(path,"run.par")),'"'), wait=TRUE)
   version <- ini::read.ini(normalizePath(file.path(path,"relief/relief.log")))$Relief$Version
