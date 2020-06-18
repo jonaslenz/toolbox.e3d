@@ -70,8 +70,8 @@ if (version == "3.2")
   write.landuse.E3D(POLY_ID = soils$POLY_ID,length = plotlength, path = file.path(path,"model/soil/"), filename = "landuse.asc")
   write.landuse.E3D(POLY_ID = soils$POLY_ID,length = plotlength, path = file.path(path,"model/"), filename = "landuse.asc")
 
-  message("Requires E3D-Version 3.2.0.9 or higher")
-  return(-1)
+#  message("Requires E3D-Version 3.2.0.9 or higher")
+#  return(-1)
 #---
 }else{
   write.landuse.E3D(POLY_ID = soils$POLY_ID,length = plotlength, path = file.path(path,"model/"), filename = "landuse.asc")
@@ -81,15 +81,16 @@ if (version == "3.2")
 
   write.rainfile.E3D(time = c(0,endmin*60), intens = c(intensity,0), path, filename = "model/rain_e3d.csv")
 
-  if(ponding){message("not implemented yet"); return(-1);}
-#  if(ponding){change_settings.E3D(path, filename = "model/run.par", module = "WatchCell", setting = "WatchGrid", value = "1")}
-  if(!ponding){change_settings.E3D(path, filename = "model/run.par", module = c("WatchCell","Infiltration_model"), setting = c("WatchMethod","Ponding"), value = c("1","0"))}
+  write.csv(
+    cbind.data.frame(row=1:simlines, column = 1, x=1:simlines,y=1),
+    file = file.path(path,"model/watchcell.csv"),
+    quote = FALSE,
+    row.names = FALSE
+    )
 
-## one possibility to watch cells with POUR.asc
-#POUR.asc in relief folder
-#  a <- raster(resolution = 1, xmn=0, xmx=plotlength, ymn=0, ymx=simlines,crs="+proj=robin +datum=WGS84", vals=NA)
-#  a[,1] <- 1:simlines
-#  raster::writeRaster(a,    filename = file.path(path,"model/relief/pour.asc"),  format ="ascii",    overwrite=TRUE  )
+  if(ponding){change_settings.E3D(path, filename = "model/run.par", module = c("WatchCell","WatchCell"), setting = c("WatchMethod","WatchCellList"), value = c("1",file.path(path,"model/watchcell.csv")))}
+  if(!ponding){change_settings.E3D(path, filename = "model/run.par", module = c("WatchCell","WatchCell","Infiltration_model"), setting = c("WatchMethod","WatchCellList","Ponding"), value = c("1",file.path(path,"model/watchcell.csv"),"0"))}
+
 
   #iteration of Skinfaktor
   skinupper=100
@@ -101,21 +102,16 @@ if (version == "3.2")
       soils$SKINFACTOR <- 10^seq(log10(skinlower),log10(skinupper), length.out = simlines);
 
       utils::write.csv(soils,file.path(path,"model/soil_params.csv"), row.names = FALSE, quote = FALSE)
-      system2("e3d", paste0('/s "',normalizePath(file.path(path,"model/run.par")),'"'), wait=TRUE)
+      utils::write.csv(soils,file.path(path,"model/soil/soil_params.csv"), row.names = FALSE, quote = FALSE)
 
-      infil <- NA
+      system2("e3d", paste0('/c "',normalizePath(file.path(path,"model/run.par")),'"'), wait=TRUE)
 
-      for (j in 1:simlines){
-        pidfile <- file.path(path,paste0("model/soil/pid_",j,".csv"))
-        if(!file.exists(pidfile))
-           {
-             stop("Can't read soil set. Please check that E3D can create soil sets by command line prompt.")
-           }else{
-             pid <- read.csv(pidfile)
-             infil[j] <- pid[pid$time.s.==endmin*60,3]
-           }
+infilfile <- read.csv(file.path(path,"model/result/infil.csv"), stringsAsFactors = FALSE)
+reas <- as.POSIXlt(paste(as.Date(infilfile$Date, format = "%Y.%m.%d"),infilfile$Time))
+min <- (reas-reas[1])/60
+a <- infilfile[min==endmin-1,]
 
-      }
+if (nrow(a)!=simlines | is.unsorted(a$Row)){stop("something went wrong with the infilfile")}
       # #check and read possible output formats of E3D may be used later, when watch cell option is available
       #   {
       #     if(!file.exists(file.path(path,"model/result/sum_q.sdat")))
@@ -124,8 +120,8 @@ if (version == "3.2")
       #   }else
       #   { runoff <- raster::raster(file.path(path,"model/result/sum_q.asc"))[,1]*1000 }
 
-      skinlower <- soils$SKINFACTOR[Position(function(x){infilrate>x},infil, right = TRUE)]
-      skinupper <- soils$SKINFACTOR[Position(function(x){infilrate<x},infil)]
+      skinlower <- soils$SKINFACTOR[Position(function(x){infilrate>x},a$Infil, right = TRUE)]
+      skinupper <- soils$SKINFACTOR[Position(function(x){infilrate<x},a$Infil)]
 
 
       if(i>100) {print("no iteration"); break;} #end if not iterating
