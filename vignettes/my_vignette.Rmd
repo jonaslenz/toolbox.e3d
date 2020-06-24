@@ -1,0 +1,64 @@
+---
+title: "my_vignette"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{my_vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(toolbox.e3d)
+```
+
+# Intro
+
+The toolbox.e3d was created to perform often occuring tasks done with the soil erosion model EROSION-3D in an easy usable and reproducable way.
+It requires a licenced EROSION-3D installation on a Windows system.
+Download of this software and licence conditions are available at http://bodenerosion.com/e3d_lizenzen.html.
+
+EROSION-3D is designed as software with Graphical User Interface (GUI) with limited command line support.
+The toolbox.e3d uses only the command line interaction, as this is the only way to make the modelling fully reproducable (compare EGU GMD editorial).
+
+# Setup
+Once EROSION-3D is installed and activated the interaction with toolbox.e3d can be tested using
+
+```{r}
+toolbox.e3d::get_version.E3D()
+```
+
+This function checks, if EROSION-3D can be found in the system PATH-Variable.
+If it is not present in PATH it searchs for EROSION-3D in the registry and adds it temporarely to PATH for the current R-session.
+
+When succesful it returns the version number of the found EROSION-3D installation.
+
+If this function fails with error message "cannot access e3d instalation" you should check the installtion of EROSION-3D and add the installation folder manually to system PATH.
+
+
+# determination of calibration parameters
+
+Soil input parameters of EROSION-3D include the two calibration parameters skinfactor and resistance to erosion.
+Determination of these two needs to be done to fit model output with runoff/soilloss measurement data obtained in rainfall simulations in field.
+
+Determination is done by automaticly setting up EROSION-3D models of homogeneus rainfall simulation plots and iteration of the relevant calibration parameter until the choosen fitting target is reached.
+
+## fitting targets skinfactor
+
+### cumulative runoff
+
+
+## fitting targets resistance to erosion
+
+
+# command line interaction modes
+EROSION-3D can be run by command line using the following syntax
+"e3d /r C:/E3Dtest/model/run.par"
+
