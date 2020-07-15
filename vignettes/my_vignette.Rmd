@@ -1,8 +1,8 @@
 ---
-title: "my_vignette"
+title: "toolbox.e3d"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{my_vignette}
+  %\VignetteIndexEntry{toolbox.e3d}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -21,14 +21,33 @@ library(toolbox.e3d)
 
 # Intro
 
-The toolbox.e3d was created to perform often occuring tasks done with the soil erosion model EROSION-3D in an easy usable and reproducable way.
+The R wrapper package toolbox.e3d was created to perform often occuring tasks done with the soil erosion model EROSION-3D in an easy usable and reproducable way.
 It requires a licenced EROSION-3D installation on a Windows system.
-Download of this software and licence conditions are available at http://bodenerosion.com/e3d_lizenzen.html.
+Download of this software and licence conditions are available at Geognostics (http://bodenerosion.com/e3d_lizenzen.html).
 
-EROSION-3D is designed as software with Graphical User Interface (GUI) with limited command line support.
-The toolbox.e3d uses only the command line interaction, as this is the only way to make the modelling fully reproducable (compare EGU GMD editorial).
+EROSION-3D is designed as software with Graphical User Interface (GUI) with limited command line support introduced in version 3.15.
+The toolbox.e3d uses only the command line interaction, for fully reproducable work.
+Each manual change in modelling is seen as non reproducable, or at least failure prone [@gmd_executive_editors_editorial_2019].
 
-# Setup
+The toolbox.e3d was developed with the 32-bit EROSION-3D version 3.2.0.9.
+As the command line interaction is sparesly used up to now, several functions may not work with older versions of EROSION-3D
+
+
+# Installation
+
+Use the following commands in R to install toolbox.e3d
+```{r, eval = FALSE}
+# Install devtools from CRAN
+install.packages("devtools")
+
+# Install toolbox.e3d
+devtools::install_github("jonaslenz/toolbox.e3d")
+```
+
+EROSION-3D needs to be installed and licencesed separetely, please refer to the handbook [@von_werner].
+
+## test setup
+
 Once EROSION-3D is installed and activated the interaction with toolbox.e3d can be tested using
 
 ```{r}
@@ -38,19 +57,60 @@ toolbox.e3d::get_version.E3D()
 This function checks, if EROSION-3D can be found in the system PATH-Variable.
 If it is not present in PATH it searchs for EROSION-3D in the registry and adds it temporarely to PATH for the current R-session.
 
-When succesful it returns the version number of the found EROSION-3D installation.
-
 If this function fails with error message "cannot access e3d instalation" you should check the installtion of EROSION-3D and add the installation folder manually to system PATH.
 
+When succesful this function runs an elevation model preprocessing and returns the version number in the created file relief.log.
+
+To get full build information use
+```{r, eval = FALSE}
+toolbox.e3d::get_version.E3D(build = T)
+```
+
+# general workflow
+
+The command line interaction with EROSION-3D works with three basic commands [@von_werner2007]:
+
+ - '/c' for calculation
+ - '/r' for preprocessing of relief set
+ - '/s' for preprocessing of soil set (available from version 3.2.0.9)
+
+All further options (paths to input files, modelling options) are set in a *.PAR file.
+
+The command would run an EROSION-3D calculation from R:
+```{r, eval = FALSE}
+system2("e3d", paste0('/c "',normalizePath(file.path(path,"model/run.par")),'"'), wait=TRUE)
+```
+ 
 
 # determination of calibration parameters
 
 Soil input parameters of EROSION-3D include the two calibration parameters skinfactor and resistance to erosion.
-Determination of these two needs to be done to fit model output with runoff/soilloss measurement data obtained in rainfall simulations in field.
+Determination of these two needs to be done to fit model output with runoff/soilloss measurement data obtained in rainfall simulations in field [@routschek; @SChindewol].
 
 Determination is done by automaticly setting up EROSION-3D models of homogeneus rainfall simulation plots and iteration of the relevant calibration parameter until the choosen fitting target is reached.
 
+## model setup
+
+As first step folders are created including a basic EROSION-3D model.
+```{r, eval = FALSE}
+toolbox.e3d::create_folders.E3D(path = "C:/E3Dmodel/")
+```
+
+### elevation and landuse model
+
+EROSION-3D uses a relief set, derived from a Digital Elevation Model (DEM).
+The relief set can be created with
+
+```{r, eval = FALSE}
+
+toolbox.e3d::write.relief.E3D(POLY_ID = c(1,2,3),length = 50,slope = 11, path = "C:/E3Dmodel/", filename = "dem.asc", resolution = 1)
+
+system2("e3d", paste0('/r "',normalizePath(file.path(path,"model/run.par")),'"'), wait=TRUE)
+```
+
+
 ## fitting targets skinfactor
+
 
 ### cumulative runoff
 
