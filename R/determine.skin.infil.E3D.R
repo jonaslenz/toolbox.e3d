@@ -21,15 +21,15 @@
 #' @param simlines integer value, number of parallel calculated plots, higher numbers decrease number of iteration steps with E3D, but increases number of write-read operations
 #' @param path path to modeling directory, default is a temporary directory
 #' @param silent logical, if TRUE skinfactor iteration steps will be written as message
-#' @param version character, default is "3.2" which is actual official released version, other values are assuming version with implemented soil set creation /s
+#' @param version version number can be set manually if known to reduce calls to E3D and save processing time
 #' @importFrom raster raster
 #' @importFrom utils read.csv
 #' @export
 #' @examples determine.skin.infil.E3D(Cl = 30, Si = 40, Sa = 30, Corg = 1.3, Bulk = 1300, Moist = 22, infilrate = 0.2, intensity = 0.5, plotwidth = 1, plotlength = 10, slope = 10, endmin = 30, ponding = TRUE, silent = FALSE)
 #'
-determine.skin.infil.E3D <- function(Cl, Si, Sa, Corg, Bulk, Moist, infilrate, intensity, plotwidth = 1, plotlength = 2, slope=5, endmin, ponding =FALSE, simlines = 100, path = tempdir(), silent=TRUE, version="3.2")
+determine.skin.infil.E3D <- function(Cl, Si, Sa, Corg, Bulk, Moist, infilrate, intensity, plotwidth = 1, plotlength = 2, slope=5, endmin, ponding =FALSE, simlines = 100, path = tempdir(), silent=TRUE, version = get_version.E3D())
 {
-  if(check_setup.E3D()!=0){stop("cannot access e3d instalation")}
+  if(!ponding & numeric_version(version)<"3.2.0.9"){stop("Ponding option can be turned off only in E3D-version after 3.2.0.9")}
 
   if(infilrate >=intensity)
   {
@@ -63,33 +63,21 @@ determine.skin.infil.E3D <- function(Cl, Si, Sa, Corg, Bulk, Moist, infilrate, i
   write.relief.E3D(POLY_ID = soils$POLY_ID,plotlength,round(slope),file.path(path,"model/"))
   system2("e3d", paste0('/r "',normalizePath(file.path(path,"model/run.par")),'"'), wait=TRUE)
 
-if (version == "3.2")
-{#---
-# for e3d version 3.2 soil set creation is not implemented, so soil_params and landuse need to be written directly in this folder
   utils::write.csv(soils,file.path(path,"model/soil/soil_params.csv"), row.names = FALSE, quote = FALSE)
   write.landuse.E3D(POLY_ID = soils$POLY_ID,length = plotlength, path = file.path(path,"model/soil/"), filename = "landuse.asc")
-  write.landuse.E3D(POLY_ID = soils$POLY_ID,length = plotlength, path = file.path(path,"model/"), filename = "landuse.asc")
-
-  message("Requires E3D-Version 3.2.0.9 or higher")
-  return(-1)
-#---
-}else{
-  write.landuse.E3D(POLY_ID = soils$POLY_ID,length = plotlength, path = file.path(path,"model/"), filename = "landuse.asc")
-  utils::write.csv(soils,file.path(path,"model/soil_params.csv"), row.names = FALSE, quote = FALSE)
-  system2("e3d", paste0('/s "',normalizePath(file.path(path,"model/run.par")),'"'), wait=TRUE)
-}
 
   write.rainfile.E3D(time = c(0,endmin*60), intens = c(intensity,0), path, filename = "model/rain_e3d.csv")
 
-  if(ponding){message("not implemented yet"); return(-1);}
-#  if(ponding){change_settings.E3D(path, filename = "model/run.par", module = "WatchCell", setting = "WatchGrid", value = "1")}
-  if(!ponding){change_settings.E3D(path, filename = "model/run.par", module = c("WatchCell","Infiltration_model"), setting = c("WatchMethod","Ponding"), value = c("1","0"))}
+  utils::write.csv(
+    cbind.data.frame(row=1:simlines, column = 1, x=1:simlines,y=1),
+    file = file.path(path,"model/watchcell.csv"),
+    quote = FALSE,
+    row.names = FALSE
+    )
 
-## one possibility to watch cells with POUR.asc
-#POUR.asc in relief folder
-#  a <- raster(resolution = 1, xmn=0, xmx=plotlength, ymn=0, ymx=simlines,crs="+proj=robin +datum=WGS84", vals=NA)
-#  a[,1] <- 1:simlines
-#  raster::writeRaster(a,    filename = file.path(path,"model/relief/pour.asc"),  format ="ascii",    overwrite=TRUE  )
+  if(ponding){change_settings.E3D(path, filename = "model/run.par", module = c("WatchCell","WatchCell"), setting = c("WatchMethod","WatchCellList"), value = c("1",file.path(path,"model/watchcell.csv")))}
+  if(!ponding){change_settings.E3D(path, filename = "model/run.par", module = c("WatchCell","WatchCell","Infiltration_model"), setting = c("WatchMethod","WatchCellList","Ponding"), value = c("1",file.path(path,"model/watchcell.csv"),"0"))}
+
 
   #iteration of Skinfaktor
   skinupper=100
@@ -100,32 +88,19 @@ if (version == "3.2")
       if(!silent){message(paste(i,":",skinlower,skinupper));}
       soils$SKINFACTOR <- 10^seq(log10(skinlower),log10(skinupper), length.out = simlines);
 
-      utils::write.csv(soils,file.path(path,"model/soil_params.csv"), row.names = FALSE, quote = FALSE)
-      system2("e3d", paste0('/s "',normalizePath(file.path(path,"model/run.par")),'"'), wait=TRUE)
+      utils::write.csv(soils,file.path(path,"model/soil/soil_params.csv"), row.names = FALSE, quote = FALSE)
 
-      infil <- NA
+      system2("e3d", paste0('/c "',normalizePath(file.path(path,"model/run.par")),'"'), wait=TRUE)
 
-      for (j in 1:simlines){
-        pidfile <- file.path(path,paste0("model/soil/pid_",j,".csv"))
-        if(!file.exists(pidfile))
-           {
-             stop("Can't read soil set. Please check that E3D can create soil sets by command line prompt.")
-           }else{
-             pid <- read.csv(pidfile)
-             infil[j] <- pid[pid$time.s.==endmin*60,3]
-           }
+infilfile <- read.csv(file.path(path,"model/result/infil.csv"), stringsAsFactors = FALSE)
+reas <- as.POSIXlt(paste(as.Date(infilfile$Date, format = "%Y.%m.%d"),infilfile$Time))
+min <- (reas-reas[1])/60
+a <- infilfile[min==endmin-1,]
 
-      }
-      # #check and read possible output formats of E3D may be used later, when watch cell option is available
-      #   {
-      #     if(!file.exists(file.path(path,"model/result/sum_q.sdat")))
-      #
-      #       { runoff <- raster::raster(file.path(path,"model/result/sum_q.sdat"))[,1]*1000 }
-      #   }else
-      #   { runoff <- raster::raster(file.path(path,"model/result/sum_q.asc"))[,1]*1000 }
+if (nrow(a)!=simlines | is.unsorted(a$Row)){stop("something went wrong with the infilfile")}
 
-      skinlower <- soils$SKINFACTOR[Position(function(x){infilrate>x},infil, right = TRUE)]
-      skinupper <- soils$SKINFACTOR[Position(function(x){infilrate<x},infil)]
+      skinlower <- soils$SKINFACTOR[Position(function(x){infilrate>x},a$Infil, right = TRUE)]
+      skinupper <- soils$SKINFACTOR[Position(function(x){infilrate<x},a$Infil)]
 
 
       if(i>100) {print("no iteration"); break;} #end if not iterating
