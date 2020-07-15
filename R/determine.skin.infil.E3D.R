@@ -31,11 +31,14 @@ determine.skin.infil.E3D <- function(Cl, Si, Sa, Corg, Bulk, Moist, infilrate, i
 {
   if(!ponding & numeric_version(version)<"3.2.0.9"){stop("Ponding option can be turned off only in E3D-version after 3.2.0.9")}
 
-  if(infilrate >=intensity)
-  {
-    message("infiltration rate is higher than rainfall intensity");
-    return(Inf);
-  }
+  if(!is.data.frame(intensity))
+    {
+      if(infilrate >=intensity)
+        {
+          message("infiltration rate is higher than rainfall intensity");
+          return(Inf);
+        }
+    }
 
   create_folders.E3D(path, overwrite = TRUE)
 
@@ -66,7 +69,12 @@ determine.skin.infil.E3D <- function(Cl, Si, Sa, Corg, Bulk, Moist, infilrate, i
   utils::write.csv(soils,file.path(path,"model/soil/soil_params.csv"), row.names = FALSE, quote = FALSE)
   write.landuse.E3D(POLY_ID = soils$POLY_ID,length = plotlength, path = file.path(path,"model/soil/"), filename = "landuse.asc")
 
-  write.rainfile.E3D(time = c(0,endmin*60), intens = c(intensity,0), path, filename = "model/rain_e3d.csv")
+  if(!is.data.frame(intensity))
+  {
+    write.rainfile.E3D(time = c(0,endmin*60), intens = c(intensity,0), path, filename = "model/rain_e3d.csv")
+  }else{
+    write.rainfile.E3D(intensity$time, intensity$rainfall, path, filename = "model/rain_e3d.csv")
+  }
 
   utils::write.csv(
     cbind.data.frame(row=1:simlines, column = 1, x=1:simlines,y=1),
