@@ -31,7 +31,7 @@ determine.eros.cumsed.E3D(
   path = tempdir(),
   silent = TRUE,
   resolution = 1,
-  version = "3.2"
+  version = get_version.E3D()
 )
 }
 \arguments{
@@ -87,7 +87,7 @@ determine.eros.cumsed.E3D(
 
 \item{resolution}{set spatial resoultion}
 
-\item{version}{character, default is "3.2" which is actual official released version, other values are assuming version with implemented soil set creation /s}
+\item{version}{version number can be set manually if known to reduce calls to E3D and save processing time}
 }
 \description{
 This function calibrates parameter resistance to erosion that calculated cumulative sediment loss equals the measured value from a rainfall experiment.

@@ -21,7 +21,7 @@ determine.skin.infil.E3D(
   simlines = 100,
   path = tempdir(),
   silent = TRUE,
-  version = "3.2"
+  version = get_version.E3D()
 )
 }
 \arguments{
@@ -57,7 +57,7 @@ determine.skin.infil.E3D(
 
 \item{silent}{logical, if TRUE skinfactor iteration steps will be written as message}
 
-\item{version}{character, default is "3.2" which is actual official released version, other values are assuming version with implemented soil set creation /s}
+\item{version}{version number can be set manually if known to reduce calls to E3D and save processing time}
 }
 \description{
 This function calibrates parameter skinfactor that calculated infiltration rate equals the measured value from a rainfall experiment.
