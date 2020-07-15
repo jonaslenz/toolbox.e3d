@@ -63,25 +63,12 @@ determine.skin.infil.E3D <- function(Cl, Si, Sa, Corg, Bulk, Moist, infilrate, i
   write.relief.E3D(POLY_ID = soils$POLY_ID,plotlength,round(slope),file.path(path,"model/"))
   system2("e3d", paste0('/r "',normalizePath(file.path(path,"model/run.par")),'"'), wait=TRUE)
 
-if (version == "3.2")
-{#---
-# for e3d version 3.2 soil set creation is not implemented, so soil_params and landuse need to be written directly in this folder
   utils::write.csv(soils,file.path(path,"model/soil/soil_params.csv"), row.names = FALSE, quote = FALSE)
   write.landuse.E3D(POLY_ID = soils$POLY_ID,length = plotlength, path = file.path(path,"model/soil/"), filename = "landuse.asc")
-  write.landuse.E3D(POLY_ID = soils$POLY_ID,length = plotlength, path = file.path(path,"model/"), filename = "landuse.asc")
-
-#  message("Requires E3D-Version 3.2.0.9 or higher")
-#  return(-1)
-#---
-}else{
-  write.landuse.E3D(POLY_ID = soils$POLY_ID,length = plotlength, path = file.path(path,"model/"), filename = "landuse.asc")
-  utils::write.csv(soils,file.path(path,"model/soil_params.csv"), row.names = FALSE, quote = FALSE)
-  system2("e3d", paste0('/s "',normalizePath(file.path(path,"model/run.par")),'"'), wait=TRUE)
-}
 
   write.rainfile.E3D(time = c(0,endmin*60), intens = c(intensity,0), path, filename = "model/rain_e3d.csv")
 
-  write.csv(
+  utils::write.csv(
     cbind.data.frame(row=1:simlines, column = 1, x=1:simlines,y=1),
     file = file.path(path,"model/watchcell.csv"),
     quote = FALSE,
@@ -101,7 +88,6 @@ if (version == "3.2")
       if(!silent){message(paste(i,":",skinlower,skinupper));}
       soils$SKINFACTOR <- 10^seq(log10(skinlower),log10(skinupper), length.out = simlines);
 
-      utils::write.csv(soils,file.path(path,"model/soil_params.csv"), row.names = FALSE, quote = FALSE)
       utils::write.csv(soils,file.path(path,"model/soil/soil_params.csv"), row.names = FALSE, quote = FALSE)
 
       system2("e3d", paste0('/c "',normalizePath(file.path(path,"model/run.par")),'"'), wait=TRUE)
@@ -112,13 +98,6 @@ min <- (reas-reas[1])/60
 a <- infilfile[min==endmin-1,]
 
 if (nrow(a)!=simlines | is.unsorted(a$Row)){stop("something went wrong with the infilfile")}
-      # #check and read possible output formats of E3D may be used later, when watch cell option is available
-      #   {
-      #     if(!file.exists(file.path(path,"model/result/sum_q.sdat")))
-      #
-      #       { runoff <- raster::raster(file.path(path,"model/result/sum_q.sdat"))[,1]*1000 }
-      #   }else
-      #   { runoff <- raster::raster(file.path(path,"model/result/sum_q.asc"))[,1]*1000 }
 
       skinlower <- soils$SKINFACTOR[Position(function(x){infilrate>x},a$Infil, right = TRUE)]
       skinupper <- soils$SKINFACTOR[Position(function(x){infilrate<x},a$Infil)]
