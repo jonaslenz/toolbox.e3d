@@ -5,14 +5,17 @@ vignette: >
   %\VignetteIndexEntry{toolbox.e3d}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+bibliography: vignette_toolbox.e3d.bib 
 ---
 
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  cache = TRUE
 )
+
 ```
 
 # Intro
@@ -31,7 +34,7 @@ As the command line interaction is sparesly used up to now, several functions ma
 
 ## Command line interaction with E3D
 
-There are three basic commands to run EROSION-3D from command line [@von_werner2007]:
+There are three basic commands to run EROSION-3D from command line [@von_werner_erosion-3d_2007]:
 
  - '/c' for calculation
  - '/r' for preprocessing of relief set
@@ -60,7 +63,7 @@ install.packages("devtools")
 devtools::install_github("jonaslenz/toolbox.e3d")
 ```
 
-EROSION-3D needs to be installed and licencesed separetely, please refer to the handbook [@von_werner].
+EROSION-3D needs to be installed and licencesed separetely, please refer to the handbook [@von_werner_erosion-3d_2003].
 
 ## test setup
 
@@ -87,7 +90,7 @@ toolbox.e3d::get_version.E3D(build = T)
 
 Soil input parameters of EROSION-3D include the two calibration parameters skinfactor and resistance to erosion.
 Determination of these two needs to be done to fit model output with runoff/soilloss measurement data obtained in rainfall simulations in field.
-In previous works these parameters were determined manually with the hillslope erosion modelling tool EROSION-2D [@routschek; @SChindewol].
+In previous works these parameters were determined manually with the hillslope erosion modelling tool EROSION-2D [@michael_anwendung_2000; @schindewolf_parameterization_2012].
 Both tools share basic algorithms, but show differences in available model options and possible input accuracy of parameters.
 
 For fully reproducable determination, synthetic landuse and Digital Elevation Models (DEM) are used to model rainfall simulation plots in EROSION-3D.

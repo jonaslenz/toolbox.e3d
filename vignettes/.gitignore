@@ -1,2 +1,4 @@
 *.html
 *.R
+
+my_vignette_cache/
