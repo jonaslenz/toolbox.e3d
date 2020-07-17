@@ -1,6 +1,8 @@
 ---
 title: "toolbox.e3d"
-output: rmarkdown::html_vignette
+output:
+  rmarkdown::html_vignette:
+    toc: TRUE
 vignette: >
   %\VignetteIndexEntry{toolbox.e3d}
   %\VignetteEngine{knitr::rmarkdown}
@@ -80,7 +82,7 @@ If this function fails with error message "cannot access e3d instalation" you sh
 
 When succesful this function runs an elevation model preprocessing and returns the version number in the created file relief.log.
 
-To get full build information use
+To get full build information of EROSION-3D use
 ```{r, eval = FALSE}
 toolbox.e3d::get_version.E3D(build = T)
 ```
