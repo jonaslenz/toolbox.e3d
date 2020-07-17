@@ -14,8 +14,7 @@ bibliography: vignette_toolbox.e3d.bib
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
-  cache = TRUE
+  comment = "#>"
 )
 
 ```
@@ -282,12 +281,14 @@ soils <- read.csv(file.path(path,"soil/soil_params.csv"))[1,]
   soils$SKINFACTOR[1] <- skin_cum
   soils$SKINFACTOR[2] <- skin_inf
   
-  write.csv(soils,file.path(path,"soil/soil_params.csv"), row.names = FALSE, quote = FALSE)
+  write.csv(soils,file.path(path,"soil/soil_params.csv"),
+            row.names = FALSE, quote = FALSE)
 ```
 
 The synthetic landuse.asc can be created with:
 ```{r}    
-  toolbox.e3d::write.landuse.E3D(POLY_ID = soils$POLY_ID,length = 10, path = file.path(path,"soil/"), filename = "landuse.asc")
+  toolbox.e3d::write.landuse.E3D(POLY_ID = soils$POLY_ID, length = 10,
+            path = file.path(path,"soil/"), filename = "landuse.asc")
 ```
 
 ### soil set creation since version 3.2.0.9
@@ -298,8 +299,10 @@ This allows the analysis of parameters derived by EROSION-3D (*.pid files, THETA
 The input files must be written to the model parent folder, defined in the *.par file and preprocessed by:
 ```{r}    
 # write files to parent folder
-  write.csv(soils,file.path(path,"soil_params.csv"), row.names = FALSE, quote = FALSE)
-  toolbox.e3d::write.landuse.E3D(POLY_ID = soils$POLY_ID,length = 10, path = file.path(path), filename = "landuse.asc")
+  write.csv(soils,file.path(path,"soil_params.csv"),
+            row.names = FALSE, quote = FALSE)
+  toolbox.e3d::write.landuse.E3D(POLY_ID = soils$POLY_ID, length = 10,
+            path = file.path(path), filename = "landuse.asc")
 
 # read, modify and rewrite *.par
   run_par <- ini::read.ini(file.path(path,"run.par"))
@@ -323,7 +326,8 @@ The input files must be written to the model parent folder, defined in the *.par
 
 A syntethic DEM is created with:
 ```{r}
-toolbox.e3d::write.relief.E3D(POLY_ID = soils$POLY_ID, length = 10,slope = 11, path = path, filename = "dem.asc")
+toolbox.e3d::write.relief.E3D(POLY_ID = soils$POLY_ID, length = 10,slope = 11,
+                              path = path, filename = "dem.asc")
 ```
 where **length** (in metres) and **slope** (inclination in %) define the slope geometry.
 
@@ -347,7 +351,8 @@ If only one value is returned all slope values are equal and no step artifacts w
 An EROSION-3D compatible rainfall file can be written by:
 ```{r}
 # 30 minutes * 60 seconds/minute
-toolbox.e3d::write.rainfile.E3D(time = c(0,30*60), intens = c(0.5,0), path, filename = "rain_e3d.csv")
+toolbox.e3d::write.rainfile.E3D(time = c(0,30*60), intens = c(0.5,0), path,
+                                filename = "rain_e3d.csv")
 ```
 **time** and **intens** are numeric vectors of equal length.
 **time** gives the timesteps in seconds, at which rainfall intensities changes occure.
