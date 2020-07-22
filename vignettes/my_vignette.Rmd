@@ -1,7 +1,7 @@
 ---
 title: "toolbox.e3d"
 output:
-  rmarkdown::html_vignette:
+  rmarkdown::pdf_document:
     toc: TRUE
 vignette: >
   %\VignetteIndexEntry{toolbox.e3d}
