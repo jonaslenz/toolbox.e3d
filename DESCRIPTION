@@ -4,7 +4,9 @@ Title: Toolbox for the soil erosion modeling tool EROSION-3D
 Version: 0.0.0.90
 Author: Jonas Lenz
 Maintainer: Jonas Lenz <jonaspunktlenz@gmail.com>
-Description: Functions to work with the soil erosion modeling tool EROSION-3D from the command line.
+Description: A R wrapper package for the soil erosion modelling tool EROSION-3D (available from Geognostics at http://www.geognostics.de/e3d_demo.html).
+  Supports reproducable work with EROSION-3D via command line.
+  Automates common workflows (iteration of calibration parameters).
 URL: https://github.com/jonaslenz/toolbox.e3d
 BugReports: https://github.com/jonaslenz/toolbox.e3d/issues
 License: GPL-3
@@ -14,4 +16,7 @@ LazyData: true
 RoxygenNote: 7.1.0
 Imports: raster, ini
 Suggests: 
-    testthat (>= 2.1.0)
+    testthat (>= 2.1.0),
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
