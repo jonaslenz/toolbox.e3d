@@ -39,7 +39,7 @@ determine.skin.infil.E3D(
 
 \item{infilrate}{numeric value, infiltration rate is the fitting target of this function}
 
-\item{intensity}{numeric value, a constant rainfall intensity during the experiment}
+\item{intensity}{numeric vector, rainfall intensity of preceding time interval - corespondeces to endmin}
 
 \item{plotwidth}{numeric value, width of the experimental plot, CumRunoff will be normalized to one meter width using this parameter}
 
@@ -47,7 +47,7 @@ determine.skin.infil.E3D(
 
 \item{slope}{integer value, mean slope of experimental plot in percent}
 
-\item{endmin}{integer value, duration of rainfall experiment in full minutes rainfall was applied.}
+\item{endmin}{numeric vector, duration since start of rainfall experiment in full minutes, length must equal length of intensity}
 
 \item{ponding}{logical TRUE means ponding option is used, FALSE - is not used in E3D, ponding limits amount of infiltrating water to available water}
 

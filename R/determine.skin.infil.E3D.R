@@ -12,11 +12,11 @@
 #' @param Moist numeric
 #'
 #' @param infilrate numeric value, infiltration rate is the fitting target of this function
-#' @param intensity numeric value, a constant rainfall intensity during the experiment
 #' @param plotwidth numeric value, width of the experimental plot, CumRunoff will be normalized to one meter width using this parameter
 #' @param plotlength integer value, length of experimental plot, needs to be an integer due to spatial resolution of 1 meter in E3D
 #' @param slope integer value, mean slope of experimental plot in percent
-#' @param endmin integer value, duration of rainfall experiment in full minutes rainfall was applied.
+#' @param intensity numeric vector, rainfall intensity of preceding time interval - corespondeces to endmin
+#' @param endmin numeric vector, duration since start of rainfall experiment in full minutes, length must equal length of intensity
 #' @param ponding logical TRUE means ponding option is used, FALSE - is not used in E3D, ponding limits amount of infiltrating water to available water
 #' @param simlines integer value, number of parallel calculated plots, higher numbers decrease number of iteration steps with E3D, but increases number of write-read operations
 #' @param path path to modeling directory, default is a temporary directory
@@ -31,7 +31,7 @@ determine.skin.infil.E3D <- function(Cl, Si, Sa, Corg, Bulk, Moist, infilrate, i
 {
   if(!ponding & numeric_version(version)<"3.2.0.9"){stop("Ponding option can be turned off only in E3D-version after 3.2.0.9")}
 
-  if(infilrate >=intensity)
+  if(infilrate >= tail(intensity,1))
   {
     message("infiltration rate is higher than rainfall intensity");
     return(Inf);
@@ -95,7 +95,9 @@ determine.skin.infil.E3D <- function(Cl, Si, Sa, Corg, Bulk, Moist, infilrate, i
 infilfile <- read.csv(file.path(path,"model/result/infil.csv"), stringsAsFactors = FALSE)
 reas <- as.POSIXlt(paste(as.Date(infilfile$Date, format = "%Y.%m.%d"),infilfile$Time))
 min <- (reas-reas[1])/60
-a <- infilfile[min==endmin-1,]
+#select infiltration rate from infilfile, where minute equals last minute given in endmin.
+#"-1" because e3d- infilfile timestamps differ from endmin
+a <- infilfile[min==ceiling(tail(endmin,1))-1,]
 
 if (nrow(a)!=simlines | is.unsorted(a$Row)){stop("something went wrong with the infilfile")}
 
