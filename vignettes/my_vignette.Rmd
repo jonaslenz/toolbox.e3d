@@ -1,7 +1,7 @@
 ---
 title: "toolbox.e3d"
 output:
-  rmarkdown::html_vignette:
+  rmarkdown::pdf_document:
     toc: TRUE
 vignette: >
   %\VignetteIndexEntry{toolbox.e3d}
@@ -116,7 +116,7 @@ which produced
 
 with experimental settings of
 
- - 0.5 mm/h rainfall intensity **intensity**
+ - 0.5 mm/min rainfall intensity **intensity**
  - 1 metre wide plot **plotwidth**
  - 10 metre long plot **plotlength**
  - 10 percent slope inclination **slope**
