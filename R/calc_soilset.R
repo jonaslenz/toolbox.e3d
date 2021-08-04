@@ -35,6 +35,7 @@ calc_soilset <- function(soils = dummy_soilset(), intensity = 0.7, plotlength = 
   {
     soils[2,] <- soils[1,]
     soils$POLY_ID <- 1:2
+    print(message("Duplicating single soil entry to allow calculation."))
   }
 
   write.relief.E3D(POLY_ID = soils$POLY_ID, plotlength, round(slope),
