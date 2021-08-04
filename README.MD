@@ -13,6 +13,12 @@ install.packages("devtools")
 devtools::install_github("jonaslenz/toolbox.e3d")
 ```
 
+If you do not have devtools installed, you can also download and install the source file (toolbox.e3d_0.0.0.90.tar.gz).
+
+```r
+install.packages("[...path to downloaded file...]/toolbox.e3d_0.0.0.90.tar.gz", repos = NULL, type = "source")
+```
+
 ## included Functions
 
 - determination of calibration parameters skinfactor and resistance to erosion
@@ -21,5 +27,4 @@ devtools::install_github("jonaslenz/toolbox.e3d")
 - set defined matrix potential for infiltration sub model
 
 Further functions planned to be included:
-- validation modelling
 - reproducable catchment modelling
