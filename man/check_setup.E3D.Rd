@@ -4,12 +4,16 @@
 \alias{check_setup.E3D}
 \title{check e3d setup}
 \usage{
-check_setup.E3D()
+check_setup.E3D(install_path = NA)
+}
+\arguments{
+\item{install_path, }{path to installation directory of EROSION-3D}
 }
 \value{
 none
 }
 \description{
-checks, if e3d is available from global %PATH% or can be found in registry.
+Internal function, use get_version.E3D() instead.
+Checks, if e3d is available from global %PATH%, given path or can be found in registry.
 If registry entry is found, it will be added to PATH for this session.
 }
