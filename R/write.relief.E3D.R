@@ -18,8 +18,8 @@
 
 write.relief.E3D <- function(POLY_ID, length, slope, path, filename = "dem.asc", resolution = 1)
 {
-  #EROSION-3D requires at least two rows
-  if (length(POLY_ID) < 2){POLY_ID <- rep(POLY_ID, each=2);}
+  #EROSION-3D requires at least four rows
+  if (length(POLY_ID) < 4){POLY_ID <- rep(POLY_ID, each=4);}
   if(!(length%%resolution==0 || abs((length%%resolution)/resolution-1) < 0.00001)){stop("length must be a multiple of resolution (default resolution = 1).")}
 
   rows <- length(POLY_ID)
