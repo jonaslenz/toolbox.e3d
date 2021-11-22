@@ -60,28 +60,8 @@ calc_soilset <- function(soils = dummy_soilset(), intensity = 0.7, plotlength = 
   system2("e3d", paste0("/c \"", normalizePath(file.path(path,
                                                          "model/run.par")), "\""), wait = TRUE)
 
+  runoff <- read_result.E3D("sum_q")[,1]*1000
+  sed <- read_result.E3D("sum_sedvol")[, 1]
 
-  if (!file.exists(file.path(path, "model/result/sum_q.asc"))) {
-    if (!file.exists(file.path(path, "model/result/sum_q.sdat"))) {
-      stop("Can't read result set. Please check that standard output files in E3D are either *.asc or *.sdat.")
-    }
-    else {
-      runoff <- raster::raster(file.path(path, "model/result/sum_q.sdat"))[, 1] * 1000
-    }
-  }
-  else {
-    runoff <- raster::raster(file.path(path, "model/result/sum_q.asc"))[, 1] * 1000
-  }
-  if (!file.exists(file.path(path, "model/result/sum_sedvol.asc"))) {
-    if (!file.exists(file.path(path, "model/result/sum_sedvol.sdat"))) {
-      stop("Can't read result set. Please check that standard output files in E3D are either *.asc or *.sdat.")
-    }
-    else {
-      sed <- raster::raster(file.path(path, "model/result/sum_sedvol.sdat"))[, 1]
-    }
-  }
-  else {
-    sed <- raster::raster(file.path(path, "model/result/sum_sedvol.asc"))[, 1]
-  }
   return(cbind.data.frame(soils$POLY_ID, runoff, sed))
 }
