@@ -32,13 +32,14 @@
 #' @param path path to modeling directory, default is a temporary directory
 #' @param silent logical, if TRUE skinfactor iteration steps will be written as message
 #' @param version version number can be set manually if known to reduce calls to E3D and save processing time
+#' @param errorcode logical, if TRUE an errorcode is returned instead of NA for experiments, which can not be determined: -1 No runoff, -2 to high sediment concentration
 #' @importFrom raster raster
 #' @importFrom utils read.csv
 #' @export
 #' @examples determine.eros.cumsed.E3D(FCl=5,MCl=10,CCl=15, FSi=10,MSi=20,CSi=10, FSa=15,MSa=10,CSa=5, Corg = 1.3, Bulk = 1300, Moist = 22, Skin = 0.005,Roughness=0.05, Cover = 20, Soilloss = 1, intensity = 0.5, plotwidth = 1, plotlength = 10, slope = 10, endmin = 30, ponding = TRUE)
 #' @examples determine.eros.cumsed.E3D(FCl=5,MCl=10,CCl=15, FSi=10,MSi=20,CSi=10, FSa=15,MSa=10,CSa=5, Corg = 1.3, Bulk = 1300, Moist = 22, Skin = 0.005,Roughness=0.05, Cover = 20, Soilloss = 1, intensity = 0.5, plotwidth = 1, plotlength = 10, slope = 10, endmin = 30, ponding = FALSE)
 #'
-determine.eros.cumsed.E3D <- function(FCl,MCl,CCl, FSi,MSi,CSi, FSa,MSa,CSa, Corg, Bulk, Moist, Skin, Roughness, Cover, Soilloss, intensity, plotwidth, plotlength, slope, endmin, ponding =FALSE, simlines = 100, path = tempdir(), silent=TRUE, resolution = 1, version = get_version.E3D())
+determine.eros.cumsed.E3D <- function(FCl,MCl,CCl, FSi,MSi,CSi, FSa,MSa,CSa, Corg, Bulk, Moist, Skin, Roughness, Cover, Soilloss, intensity, plotwidth, plotlength, slope, endmin, ponding =FALSE, simlines = 100, path = tempdir(), silent=TRUE, resolution = 1, version = get_version.E3D(), errorcode = FALSE)
 {
   if(!ponding & numeric_version(version)<"3.2.0.9"){stop("Ponding option can be turned off only in E3D-version after 3.2.0.9")}
 
@@ -99,12 +100,12 @@ determine.eros.cumsed.E3D <- function(FCl,MCl,CCl, FSi,MSi,CSi, FSa,MSa,CSa, Cor
       sed <- read_result.E3D("sum_sedvol")[, 1]
 
       if(runoff[1]<=0)
-      {message("No Runoff - No Soilloss"); return(NA);}
+      {message("No Runoff - No Soilloss"); if(errorcode){return(-1)}else{return(NA)};}
 
       conc <- round(sed/runoff*1000)
 
       if(conc[1]>=300 & sed[1] < Soilloss)
-      {message("Measured Soilloss requires sediment concentration higher than 300 kg/m^3. Outside set limits in EROSION-3D."); return(NA);}
+      {message("Measured Soilloss requires sediment concentration higher than 300 kg/m^3. Outside set limits in EROSION-3D."); if(errorcode){return(-2)}else{return(NA)};}
 
       eroslower <- soils$ERODIBIL[Position(function(x){Soilloss<x},sed, right = TRUE)]
       erosupper <- soils$ERODIBIL[Position(function(x){Soilloss>x},sed)]
