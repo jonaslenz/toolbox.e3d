@@ -96,8 +96,8 @@ determine.eros.cumsed.E3D <- function(FCl,MCl,CCl, FSi,MSi,CSi, FSa,MSa,CSa, Cor
       system2("e3d", paste0('/c "',normalizePath(file.path(path,"model/run.par")),'"'), wait=TRUE)
 
       #check and read possible output formats of E3D
-      runoff <- read_result.E3D("sum_q")[,1]*1000
-      sed <- read_result.E3D("sum_sedvol")[, 1]
+      runoff <- read_result.E3D("sum_q", modelpath = path)[,1]*1000
+      sed <- read_result.E3D("sum_sedvol", modelpath = path)[, 1]
 
       if(runoff[1]<=0)
       {message("No Runoff - No Soilloss"); if(errorcode){return(-1)}else{return(NA)};}

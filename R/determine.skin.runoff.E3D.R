@@ -86,7 +86,7 @@ determine.skin.runoff.E3D <- function(Cl, Si, Sa, Corg, Bulk, Moist, CumRunoff, 
       system2("e3d", paste0('/c "',normalizePath(file.path(path,"model/run.par")),'"'), wait=TRUE)
 
       #check and read possible output formats of E3D
-      runoff <- read_result.E3D("sum_q")[,1]*1000
+      runoff <- read_result.E3D("sum_q", modelpath = path)[,1]*1000
 
       skinlower <- soils$SKINFACTOR[Position(function(x){CumRunoff<x},runoff, right = TRUE)]
       skinupper <- soils$SKINFACTOR[Position(function(x){CumRunoff>x},runoff)]

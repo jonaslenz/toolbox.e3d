@@ -60,8 +60,8 @@ calc_soilset <- function(soils = dummy_soilset(), intensity = 0.7, plotlength = 
   system2("e3d", paste0("/c \"", normalizePath(file.path(path,
                                                          "model/run.par")), "\""), wait = TRUE)
 
-  runoff <- read_result.E3D("sum_q")[,1]*1000
-  sed <- read_result.E3D("sum_sedvol")[, 1]
+  runoff <- read_result.E3D("sum_q", modelpath = path)[,1]*1000
+  sed <- read_result.E3D("sum_sedvol", modelpath = path)[, 1]
 
   return(cbind.data.frame(soils$POLY_ID, runoff, sed))
 }
