@@ -7,7 +7,7 @@
 #' @param length numeric value, defining slope length in whole meters
 #' @param path folder path in which file will be written
 #' @param filename name of created file
-#' @param resolution set spatial resoultion
+#' @param resolution set spatial resolution
 #' @return None, file is written
 #' @export
 #' @importFrom raster writeRaster

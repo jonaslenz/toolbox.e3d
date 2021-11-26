@@ -68,7 +68,7 @@ determine.eros.cumsed.E3D(
 
 \item{Soilloss}{numeric value, cumulative sediment loss in kg is the fitting target of this function}
 
-\item{intensity}{numeric vector, rainfall intensity of preceding time interval - corespondeces to endmin}
+\item{intensity}{numeric vector, rainfall intensity of preceding time interval - correspondences to endmin}
 
 \item{plotwidth}{numeric value, width of the experimental plot, CumRunoff will be normalized to one meter width using this parameter}
 
@@ -86,7 +86,7 @@ determine.eros.cumsed.E3D(
 
 \item{silent}{logical, if TRUE skinfactor iteration steps will be written as message}
 
-\item{resolution}{set spatial resoultion}
+\item{resolution}{set spatial resolution}
 
 \item{version}{version number can be set manually if known to reduce calls to E3D and save processing time}
 

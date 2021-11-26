@@ -21,7 +21,7 @@ write.landuse.E3D(
 
 \item{filename}{name of created file}
 
-\item{resolution}{set spatial resoultion}
+\item{resolution}{set spatial resolution}
 }
 \value{
 None, file is written

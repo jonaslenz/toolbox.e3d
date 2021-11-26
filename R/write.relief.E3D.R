@@ -8,7 +8,7 @@
 #' @param slope numeric value, defining slope inclination in whole percent
 #' @param path folder path in which file will be written
 #' @param filename name of created file
-#' @param resolution set spatial resoultion
+#' @param resolution set spatial resolution
 #' @return None, file is written
 #' @importFrom raster writeRaster
 #' @importFrom raster raster

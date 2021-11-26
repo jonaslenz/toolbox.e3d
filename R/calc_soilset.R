@@ -6,19 +6,20 @@
 #' @param soils dataframe, holding all EROSION-3D soil parameters in named columns
 #'
 #' @param plotlength integer value, length of experimental plot, needs to be an integer due to spatial resolution of 1 meter in E3D
-#' @param resolution set spatial resoultion
+#' @param resolution set spatial resolution
 #' @param slope integer value, mean slope of experimental plot in percent
-#' @param intensity numeric vector, rainfall intensity of preceding time interval - corespondeces to endmin
+#' @param intensity numeric vector, rainfall intensity of preceding time interval - correspondences to endmin
 #' @param endmin numeric vector, duration since start of rainfall experiment in full minutes, length must equal length of intensity
 #' @param ponding logical TRUE means ponding option is used, FALSE - is not used in E3D, ponding limits amount of infiltrating water to available water
 #' @param path path to modeling directory, default is a temporary directory
+#' @param pourpoint_obs, bool use POURpoint observation
 #' @importFrom raster raster
 #' @importFrom utils read.csv
 #' @export
 #' @examples calc_soilset(soil_params)
 #'
 
-calc_soilset <- function(soils = dummy_soilset(), intensity = 0.7, plotlength = 22, slope = 9, endmin = 30, resolution = 1, ponding = FALSE, path = tempdir())
+calc_soilset <- function(soils = dummy_soilset(), intensity = 0.7, plotlength = 22, slope = 9, endmin = 30, resolution = 1, ponding = FALSE, path = tempdir(), pourpoint_obs = TRUE)
 {
   nms <- c("POLY_ID" ,"BLKDENSITY", "CORG", "INITMOIST", "FT", "MT", "GT", "FU", "MU", "GU", "FS", "MS", "GS", "SKINFACTOR", "ROUGHNESS", "COVER")
   Missing <- setdiff(nms, names(soils))  # Find names of missing columns
@@ -42,6 +43,12 @@ calc_soilset <- function(soils = dummy_soilset(), intensity = 0.7, plotlength = 
                    file.path(path, "model/"), resolution = resolution)
   system2("e3d", paste0("/r \"", normalizePath(file.path(path,
                                                          "model/run.par")), "\""), wait = TRUE)
+  if(pourpoint_obs)
+    {
+      write.pourpoint.E3D(soils$POLY_ID, plotlength,path = file.path(path, "model/relief/"), resolution = resolution)
+      set_pourpoints()
+    }
+
   utils::write.csv(soils, file.path(path, "model/soil/soil_params.csv"),
                    row.names = FALSE, quote = FALSE)
   write.landuse.E3D(POLY_ID = soils$POLY_ID, length = plotlength,
@@ -62,6 +69,8 @@ calc_soilset <- function(soils = dummy_soilset(), intensity = 0.7, plotlength = 
 
   runoff <- read_result.E3D("sum_q", modelpath = path)[,1]*1000
   sed <- read_result.E3D("sum_sedvol", modelpath = path)[, 1]
+
+  set_pourpoints(FALSE)
 
   return(cbind.data.frame(soils$POLY_ID, runoff, sed))
 }

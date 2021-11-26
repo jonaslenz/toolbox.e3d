@@ -23,9 +23,9 @@
 #' @param Soilloss numeric value, cumulative sediment loss in kg is the fitting target of this function
 #' @param plotwidth numeric value, width of the experimental plot, CumRunoff will be normalized to one meter width using this parameter
 #' @param plotlength integer value, length of experimental plot, needs to be an integer due to spatial resolution of 1 meter in E3D
-#' @param resolution set spatial resoultion
+#' @param resolution set spatial resolution
 #' @param slope integer value, mean slope of experimental plot in percent
-#' @param intensity numeric vector, rainfall intensity of preceding time interval - corespondeces to endmin
+#' @param intensity numeric vector, rainfall intensity of preceding time interval - correspondences to endmin
 #' @param endmin numeric vector, duration since start of rainfall experiment in full minutes, length must equal length of intensity
 #' @param ponding logical TRUE means ponding option is used, FALSE - is not used in E3D, ponding limits amount of infiltrating water to available water
 #' @param simlines integer value, number of parallel calculated plots, higher numbers decrease number of iteration steps with E3D, but increases number of write-read operations
