@@ -56,7 +56,7 @@ write.pourpoint.E3D <- function(POLY_ID, length, path, filename = "POUR.asc", re
                  xmn=0,xmx=length,
                  ymn=0, ymx=rows*resolution,
                  crs="+proj=robin +datum=WGS84",
-                 vals=0
+                 vals=NA
                  )
   rast[,1] <- POLY_ID
   writeRaster(
