@@ -22,8 +22,8 @@
 #'
 #' @param Soilloss numeric value, cumulative sediment loss in kg is the fitting target of this function
 #' @param plotwidth numeric value, width of the experimental plot, CumRunoff will be normalized to one meter width using this parameter
-#' @param plotlength integer value, length of experimental plot, needs to be an integer due to spatial resolution of 1 meter in E3D
-#' @param resolution set spatial resolution
+#' @param resolution set spatial resolution [m]
+#' @param plotlength numeric value, length of experimental plot, needs to be an multiple of spatial resolution (default 1 meter)
 #' @param slope integer value, mean slope of experimental plot in percent
 #' @param intensity numeric vector, rainfall intensity of preceding time interval - correspondences to endmin
 #' @param endmin numeric vector, duration since start of rainfall experiment in full minutes, length must equal length of intensity
@@ -85,6 +85,7 @@ determine.eros.cumsed.E3D <- function(FCl,MCl,CCl, FSi,MSi,CSi, FSa,MSa,CSa, Cor
   eroslower=0.00000001
   i=1;                                           #counter for iteration steps
 
+  # normalizing soilloss to [kg/m] - so it is directly comarable to E3D output
   Soilloss <- Soilloss / plotwidth;
 
     repeat{
