@@ -13,7 +13,8 @@ calc_soilset(
   resolution = 1,
   ponding = FALSE,
   path = tempdir(),
-  pourpoint_obs = TRUE
+  pourpoint_obs = FALSE,
+  path_to_ini = ""
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ calc_soilset(
 \item{path}{path to modeling directory, default is a temporary directory}
 
 \item{pourpoint_obs, }{bool use POURpoint observation}
+
+\item{path_to_ini, }{use only with pourpoint observation - path to e3d.ini (C:/Users/<user>/AppData/Roaming/GeoGnostics/<..erosion-3d version..")}
 }
 \description{
 This function takes a dataframe including all soil parameters of EROSION-3D and models one hillslope for each of given parameter sets.

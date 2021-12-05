@@ -13,13 +13,14 @@
 #' @param ponding logical TRUE means ponding option is used, FALSE - is not used in E3D, ponding limits amount of infiltrating water to available water
 #' @param path path to modeling directory, default is a temporary directory
 #' @param pourpoint_obs, bool use POURpoint observation
+#' @param path_to_ini, use only with pourpoint observation - path to e3d.ini (C:/Users/<user>/AppData/Roaming/GeoGnostics/<..erosion-3d version..")
 #' @importFrom raster raster
 #' @importFrom utils read.csv
 #' @export
 #' @examples calc_soilset(soil_params)
 #'
 
-calc_soilset <- function(soils = dummy_soilset(), intensity = 0.7, plotlength = 22, slope = 9, endmin = 30, resolution = 1, ponding = FALSE, path = tempdir(), pourpoint_obs = TRUE)
+calc_soilset <- function(soils = dummy_soilset(), intensity = 0.7, plotlength = 22, slope = 9, endmin = 30, resolution = 1, ponding = FALSE, path = tempdir(), pourpoint_obs = FALSE, path_to_ini = "")
 {
   nms <- c("POLY_ID" ,"BLKDENSITY", "CORG", "INITMOIST", "FT", "MT", "GT", "FU", "MU", "GU", "FS", "MS", "GS", "SKINFACTOR", "ROUGHNESS", "COVER")
   Missing <- setdiff(nms, names(soils))  # Find names of missing columns
@@ -46,7 +47,7 @@ calc_soilset <- function(soils = dummy_soilset(), intensity = 0.7, plotlength = 
   if(pourpoint_obs)
     {
       write.pourpoint.E3D(soils$POLY_ID, plotlength,path = file.path(path, "model/relief/"), resolution = resolution)
-      set_pourpoints()
+      set_pourpoints(TRUE, path_to_ini)
     }
 
   utils::write.csv(soils, file.path(path, "model/soil/soil_params.csv"),
@@ -70,7 +71,10 @@ calc_soilset <- function(soils = dummy_soilset(), intensity = 0.7, plotlength = 
   runoff <- read_result.E3D("sum_q", modelpath = path)[,1]*1000
   sed <- read_result.E3D("sum_sedvol", modelpath = path)[, 1]
 
-  set_pourpoints(FALSE)
+  if(pourpoint_obs)
+  {
+    set_pourpoints(FALSE, path_to_ini)
+  }
 
   return(cbind.data.frame(soils$POLY_ID, runoff, sed))
 }
