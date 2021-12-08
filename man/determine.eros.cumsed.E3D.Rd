@@ -72,7 +72,7 @@ determine.eros.cumsed.E3D(
 
 \item{plotwidth}{numeric value, width of the experimental plot, CumRunoff will be normalized to one meter width using this parameter}
 
-\item{plotlength}{integer value, length of experimental plot, needs to be an integer due to spatial resolution of 1 meter in E3D}
+\item{plotlength}{numeric value, length of experimental plot, needs to be an multiple of spatial resolution (default 1 meter)}
 
 \item{slope}{integer value, mean slope of experimental plot in percent}
 
@@ -86,7 +86,7 @@ determine.eros.cumsed.E3D(
 
 \item{silent}{logical, if TRUE skinfactor iteration steps will be written as message}
 
-\item{resolution}{set spatial resolution}
+\item{resolution}{set spatial resolution [m]}
 
 \item{version}{version number can be set manually if known to reduce calls to E3D and save processing time}
 
