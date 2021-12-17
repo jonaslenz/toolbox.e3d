@@ -4,12 +4,14 @@
 \alias{get_version.E3D}
 \title{reads version of E3D installation}
 \usage{
-get_version.E3D(build = FALSE, install_path = NA)
+get_version.E3D(build = FALSE, install_path = NA, relief.v = FALSE)
 }
 \arguments{
 \item{build}{logical, TRUE returns a string including build information}
 
 \item{install_path, }{path to installation directory of EROSION-3D}
+
+\item{relief.v}{logical, TRUE returns also version of terrain.dll}
 }
 \value{
 string E3D version number
