@@ -15,12 +15,17 @@
 #' @examples
 #' write.landuse.E3D(path = "C:/E3Dmodel/")
 
-write.landuse.E3D <- function(POLY_ID = c(1,2,3),length=50, path, filename = "/model/landuse.asc", resolution = 1)
+write.landuse.E3D <- function(POLY_ID = c(1,2,3),length=50, path, filename = "/model/landuse.asc", resolution = 1, split_by_na = FALSE)
 {
     #EROSION-3D requires at least four rows
   if (length(POLY_ID) < 4){POLY_ID <- rep(POLY_ID, each=4);}
   if(!(length%%resolution==0 || abs((length%%resolution)/resolution-1) < 0.00001)){stop("length must be a multiple of resolution (default resolution = 1).")}
 
+  if(split_by_na)
+  {
+    # solution from https://stackoverflow.com/questions/44465841/insert-na-elements-in-vector
+    POLY_ID <- c(sapply(POLY_ID, function(x) c(NA,x)))
+  }
   rows <- length(POLY_ID)
 
 writeRaster(
