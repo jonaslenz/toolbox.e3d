@@ -230,7 +230,7 @@ To be added ...
 # Validation modelling
 
 Validation modelling can be used to check how input parameters and model options will affect modelling results.
-Due to the high number of possible combinations this section shall describe a possible workflow demonstrating fully reproducable work with EROSION-3D.
+Due to the high number of possible combinations this section shall describe a possible workflow demonstrating fully reproducible work with EROSION-3D.
 
 The effect of differing skinfactor values (from two determination methods) on the modelled runoff volume and soil loss is used as example.
 The models are run on synthetic elevation and landuse models with independent slope stripes, as described in [@lenz_konzeptionelle_2017].
