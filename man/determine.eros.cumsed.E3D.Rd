@@ -31,7 +31,8 @@ determine.eros.cumsed.E3D(
   path = tempdir(),
   silent = TRUE,
   resolution = 1,
-  version = get_version.E3D()
+  version = get_version.E3D(),
+  errorcode = FALSE
 )
 }
 \arguments{
@@ -67,11 +68,11 @@ determine.eros.cumsed.E3D(
 
 \item{Soilloss}{numeric value, cumulative sediment loss in kg is the fitting target of this function}
 
-\item{intensity}{numeric vector, rainfall intensity of preceding time interval - corespondeces to endmin}
+\item{intensity}{numeric vector, rainfall intensity of preceding time interval - correspondences to endmin}
 
 \item{plotwidth}{numeric value, width of the experimental plot, CumRunoff will be normalized to one meter width using this parameter}
 
-\item{plotlength}{integer value, length of experimental plot, needs to be an integer due to spatial resolution of 1 meter in E3D}
+\item{plotlength}{numeric value, length of experimental plot, needs to be an multiple of spatial resolution (default 1 meter)}
 
 \item{slope}{integer value, mean slope of experimental plot in percent}
 
@@ -85,9 +86,11 @@ determine.eros.cumsed.E3D(
 
 \item{silent}{logical, if TRUE skinfactor iteration steps will be written as message}
 
-\item{resolution}{set spatial resoultion}
+\item{resolution}{set spatial resolution [m]}
 
 \item{version}{version number can be set manually if known to reduce calls to E3D and save processing time}
+
+\item{errorcode}{logical, if TRUE an errorcode is returned instead of NA for experiments, which can not be determined: -1 No runoff, -2 to high sediment concentration}
 }
 \description{
 This function calibrates parameter resistance to erosion that calculated cumulative sediment loss equals the measured value from a rainfall experiment.

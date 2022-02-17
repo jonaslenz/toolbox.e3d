@@ -12,13 +12,15 @@ calc_soilset(
   endmin = 30,
   resolution = 1,
   ponding = FALSE,
-  path = tempdir()
+  path = tempdir(),
+  pourpoint_obs = FALSE,
+  path_to_ini = ""
 )
 }
 \arguments{
 \item{soils}{dataframe, holding all EROSION-3D soil parameters in named columns}
 
-\item{intensity}{numeric vector, rainfall intensity of preceding time interval - corespondeces to endmin}
+\item{intensity}{numeric vector, rainfall intensity of preceding time interval - correspondences to endmin}
 
 \item{plotlength}{integer value, length of experimental plot, needs to be an integer due to spatial resolution of 1 meter in E3D}
 
@@ -26,11 +28,15 @@ calc_soilset(
 
 \item{endmin}{numeric vector, duration since start of rainfall experiment in full minutes, length must equal length of intensity}
 
-\item{resolution}{set spatial resoultion}
+\item{resolution}{set spatial resolution}
 
 \item{ponding}{logical TRUE means ponding option is used, FALSE - is not used in E3D, ponding limits amount of infiltrating water to available water}
 
 \item{path}{path to modeling directory, default is a temporary directory}
+
+\item{pourpoint_obs, }{bool use POURpoint observation}
+
+\item{path_to_ini, }{use only with pourpoint observation - path to e3d.ini (C:/Users/<user>/AppData/Roaming/GeoGnostics/<..erosion-3d version..")}
 }
 \description{
 This function takes a dataframe including all soil parameters of EROSION-3D and models one hillslope for each of given parameter sets.

@@ -19,36 +19,43 @@ knitr::opts_chunk$set(
 
 ```
 
-# Intro
+# Introduction
 
-The R wrapper package toolbox.e3d was created to perform often occuring tasks done with the soil erosion model EROSION-3D in an easy usable and reproducable way.
-It requires a licenced EROSION-3D installation on a Windows system.
-Download of this software and licence conditions are available at Geognostics (http://bodenerosion.com/e3d_lizenzen.html).
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE
+)
 
-EROSION-3D is designed as software with Graphical User Interface (GUI) with limited command line support introduced in version 3.15.
-The toolbox.e3d uses only the command line interaction, for fully reproducable work.
-Each manual change in modelling is seen as non reproducable, or at least failure prone [@gmd_executive_editors_editorial_2019].
+```
+
+The R wrapper package toolbox.e3d was created to perform often occurring tasks done with the soil erosion model EROSION-3D in an easy usable and reproducible way.
+It requires a licensed EROSION-3D installation on a Windows system.
+A download link and license conditions for this software are available from Geognostics (http://bodenerosion.com/e3d_demo.html).
+
+EROSION-3D is designed as software with Graphical User Interface (GUI) with limited command-line support introduced in version 3.15.
+The toolbox.e3d uses only the command-line interaction, for fully reproducible work.
+Each manual change in modeling is seen as non-reproducible or at least failure-prone [@gmd_executive_editors_editorial_2019].
 
 The toolbox.e3d was developed with the 32-bit EROSION-3D version 3.2.0.9.
-As the command line interaction is sparesly used up to now, several functions may not work with older versions of EROSION-3D
+As the command-line interaction was sparsely used up to now, several functions may not work with older versions of EROSION-3D.
 
 
-## Command line interaction with E3D
+## Command-line interaction with EROSION-3D
 
-There are three basic commands to run EROSION-3D from command line [@von_werner_erosion-3d_2007]:
+There are three basic commands to run EROSION-3D from command-line [@von_werner_erosion-3d_2007]:
 
  - '/c' for calculation
- - '/r' for preprocessing of relief set
- - '/s' for preprocessing of soil set (available from version 3.2.0.9)
+ - '/r' for pre-processing of relief set
+ - '/s' for pre-processing of soil set (available from version 3.2.0.9)
 
-All further options (paths to input files, modelling options) are set in a *.PAR file.
+All further options (paths to input files, modeling options) are set in a *.PAR file.
 
-This command would run an EROSION-3D calculation from the R-environment:
+For Example, this command would run an EROSION-3D calculation from the R-environment:
 ```{r, eval = FALSE}
 system2("e3d", '/c "C:/E3Dmodel/model/run.par"', wait=TRUE)
 ```
 
-and as pure command line call:
+and as pure command-line call:
 ```{}
 e3d /r C:/E3Dmodel/model/run.par
 ```
@@ -64,42 +71,42 @@ install.packages("devtools")
 devtools::install_github("jonaslenz/toolbox.e3d")
 ```
 
-EROSION-3D needs to be installed and licencesed separetely, please refer to the handbook [@von_werner_erosion-3d_2003].
+EROSION-3D needs to be installed and licensed separately, please refer to the EROSION-3D web page or the handbook for specific installation instructions [@von_werner_erosion-3d_2003].
 
-## test setup
+## Test setup
 
-Once EROSION-3D is installed and activated the interaction with toolbox.e3d can be tested using:
+Once EROSION-3D is installed and activated and toolbox.e3d is installed, their interaction can be tested using:
 
 ```{r}
 toolbox.e3d::get_version.E3D()
 ```
 
 This function checks, if EROSION-3D can be found in the system PATH-Variable.
-If it is not present in PATH it searchs for EROSION-3D in the registry and adds it temporarely to PATH for the current R-session.
+If it is not present in PATH it searches for EROSION-3D in the registry and adds it temporarily to PATH for the current R-session.
 
-If this function fails with error message "cannot access e3d instalation" you should check the installtion of EROSION-3D and add the installation folder manually to system PATH.
+If this function fails with error message "cannot access e3d installation" you should check the installation of EROSION-3D and add the installation folder manually to system PATH.
 
-When succesful this function runs an elevation model preprocessing and returns the version number in the created file relief.log.
+When successful this function runs a dummy erosion-3D model and returns the version number in the created file result.log.
 
-# determination of calibration parameters Skinfactor and resistance to erosion
+# Determination of calibration parameters skinfactor and resistance to erosion
 
-Soil input parameters of EROSION-3D include two calibration parameters skinfactor and resistance to erosion.
-Determination of these two needs to be done to fit model output with runoff/soilloss measurement data obtained in rainfall simulations in field.
-In previous works these parameters were determined manually with the hillslope erosion modelling tool EROSION-2D [@michael_anwendung_2000; @schindewolf_parameterization_2012].
-Both tools share basic algorithms, but show differences in available model options and possible input accuracy of parameters.
+The soil input parameters of EROSION-3D include the two calibration parameters skinfactor and resistance to erosion.
+Determination of these two needs to be done to fit the model output with runoff/soil-loss measurement data obtained in rainfall simulations in field.
+In previous works these parameters were determined manually with the hillslope-erosion modeling tool EROSION-2D [@michael_anwendung_2000; @schindewolf_parameterization_2012].
+Both erosion-modeling tools share basic algorithms, but show differences in available model options and possible input accuracy of parameters.
 
-For fully reproducable determination, synthetic landuse and Digital Elevation Models (DEM) are used to model rainfall simulation plots in EROSION-3D.
-Multiple indepentend plots - identical in relief but differing in target calibration parameter - are calculated simoultanesly.
-Relevant model output is analyzed and used to iterate calibration parameter values, until a certain accuracy is reached.
+For fully reproducible results, synthetic land-use and Digital Elevation Models (DEM) are used to model rainfall simulation plots in EROSION-3D.
+Multiple independent plots - identical in relief but differing in target calibration parameter - are calculated simultaneously.
+The model output is analyzed and used to iterate calibration parameter values, until a certain accuracy is reached.
 
-## fitting targets skinfactor
+## Fitting of skinfactor to different calibration targets
 
-Skinfactor is a calibration parameter to saturated hydraulic conductivity in infiltration submodule in EROSION-3D.
-It can be fitted to cumulative runoff from the plot or to an infiltration rate at a certain timestep.
+The skinfactor is a calibration parameter to saturated hydraulic conductivity in the infiltration submodule in EROSION-3D.
+It can be fitted to the cumulative runoff from the plot or to an infiltration rate at a certain time step.
 
-### cumulative runoff
+### Calibration target cumulative runoff
 
-To fit calculated to measured cumulative runoff for an experiment on a soil with
+To fit the calculated to the measured cumulative runoff for an experiment on a soil with
 
  - 30 mass-% clay **Cl**
  - 40 mass-% silt **Si**
@@ -107,24 +114,24 @@ To fit calculated to measured cumulative runoff for an experiment on a soil with
  (clay+silt+sand must equal 100 mass-%)
 
  - 1.3 mass-% - content of organic bound carbon **Corg**
- - 1300 kg/m^3 dry bulk density **Bulk**
- - 22 vol-% intitial soil moisture at start of experiment **Moist**
+ - 1300 $kg/m^3$ dry bulk density **Bulk**
+ - 22 vol-% initial soil moisture at start of experiment **Moist**
 
 which produced
 
- - 100 litres total runoff **CumRunoff** after 30 minutes **endmin**
+ - 100 liters total runoff **CumRunoff** after 30 minutes **endmin**
 
 with experimental settings of
 
- - 0.5 mm/min rainfall intensity **intensity**
- - 1 metre wide plot **plotwidth**
- - 10 metre long plot **plotlength**
- - 10 percent slope inclination **slope**
+ - 0.5 $mm/min$ rainfall intensity **intensity**
+ - 1 $m$ wide plot **plotwidth**
+ - 10 $m$ long plot **plotlength**
+ - 10 $\%$ slope inclination **slope**
  
 with model option
 
- - limitation of potential infiltration to available water **ponding**
- - output of calibration parameter values for each iteration step **silent**
+ - limitation of potential infiltration to available water **ponding** = TRUE
+ - display output of calibration parameter values for each iteration step **silent** = FALSE
 
 the skinfactor can be determined by:
 ```{r}
@@ -139,9 +146,9 @@ toolbox.e3d::determine.skin.runoff.E3D(Cl = 30, Si = 40, Sa = 30,
 skin_cum
 ```
 
-### infiltration rate
+### Calibration target infiltration rate
 
-using the same values as in the preceeding example
+Using the same values as in the preceding example
 with a differing fitting target of:
 
 - 0.2 mm/min infiltration rate **infilrate** after 30 minutes **endmin**
@@ -159,18 +166,17 @@ toolbox.e3d::determine.skin.infil.E3D(Cl = 30, Si = 40, Sa = 30,
 skin_inf
 ```
 
+## Fitting of resistance to erosion to different calibration targets
 
-## fitting targets resistance to erosion
+Resistance to erosion is a calibration parameter of the particle detachment calculation in the erosion submodule in EROSION-3D.
+It can be fitted to the cumulative soil loss from the plot or to a sediment concentration at a certain time step.
 
-Resistance to erosion is a calibration parameter in particle detatchment calculation in erosion submodule in EROSION-3D.
-It can be fitted to cumulative soil loss from the plot or to a sediment concentration at a certain timestep.
+The erosion submodule of EROSION-3D uses nine grain-size fractions instead of the three used in the infiltration submodule.
+Therefore **Cl**, **Si** and **Sa** are separated in fine, middle and coarse fractions for the determination functions.
 
-The erosion submodule of EROSION-3D uses nine grain size fractions instead of the three used in infiltration submodule.
-Therefore Cl, Si and Sa are separated in fine, middle and coarse fractions for the determination functions.
+### Calibration target cumulative soil loss
 
-### cumulative soil loss
-
-To fit calculated to measured cumulative soil loss for an experiment on a soil with
+To fit the calculated to the measured cumulative soil loss for an experiment on a soil with
 
  - 5 mass-% fine clay **FCl**, 10 mass-% middle clay **MCl**, 15 mass-% coarse clay **CCl**
  - 10 mass-% fine silt **FSi**, 20 mass-% middle silt **MSi**, 10 mass-% coarse silt **CSi**
@@ -180,24 +186,24 @@ To fit calculated to measured cumulative soil loss for an experiment on a soil w
 
  - 1.3 mass-% - content of organic bound carbon **Corg**
  - 1300 kg/m^3 dry bulk density **Bulk**
- - 22 vol-% intitial soil moisture at start of experiment **Moist**
+ - 22 vol-% initial soil moisture at start of experiment **Moist**
 
- - skinfactor **Skin** from previous determination (100 litres total runoff after 30 minutes **endmin**)
- - a total soil loss of 1 kg **Soilloss**
- - 0.05 s/m^(1/3) mannings n hydraulic surface roughness **Roughness**
+ - skinfactor **Skin** from previous determination (100 liters total runoff after 30 minutes **endmin**)
+ - a total soil loss of 1 kg **soil loss**
+ - 0.05 $s/m^{1/3}$ Mannings-$n$ hydraulic surface roughness **Roughness**
  - 20 % soil cover by plants, plant residues, stones, ... **Cover**
  
 with experimental settings of
 
  - 0.5 mm/h rainfall intensity **intensity**
- - 1 metre wide plot **plotwidth**
- - 10 metre long plot **plotlength**
- - 10 percent slope inclination **slope**
+ - 1 m wide plot **plotwidth**
+ - 10 m long plot **plotlength**
+ - 10 $\%$ slope inclination **slope**
  
 with model option
 
- - limitation of potential infiltration to available water **ponding**
- - output of calibration parameter values for each iteration step **silent**
+ - limitation of potential infiltration to available water **ponding** = TRUE
+ - output of calibration parameter values for each iteration step **silent** = FALSE
 
 resistance to erosion can be determined by:
 
@@ -211,26 +217,25 @@ eros_cum <-
                                        Soilloss = 1,
                                        intensity = 0.5, plotwidth = 1,
                                        plotlength = 10, slope = 10,
-                                       endmin = 30, ponding = TRUE, silent = F)
+                                       endmin = 30, ponding = TRUE, silent = FALSE)
 eros_cum
 ```
 
-## sediment concentration
+### Calibration target sediment concentration
 
 To be added ...
 
 
 
-# validation modelling
+# Validation modeling
 
-Validation modelling can be used to check how input parameters and model options will affect modelling results.
-Due to the high number of possible combinations this section shall describe a possible workflow demonstrating fully reproducable work with EROSION-3D.
+Validation modeling can be used to check how input parameters and model options will affect modeling results.
+Due to the high number of possible combinations this section shall describe a possible work flow demonstrating fully reproducible work with EROSION-3D.
 
-The effect of differing skinfactor values (from two determination methods) on runoff volume and soil loss is used as example.
-The models are run on synthetic elevation and landuse models with independent slope stripes, as described in [@lenz_konzeptionelle_2017].
-Independence of single stripes is acuired by setting flow routing option to one neighbour in the *.par file.
+The effect of differing skinfactor values (from two determination methods) on the modeled runoff volume and soil loss is used as example.
+The models are run on synthetic elevation and land use models with independent slope stripes, as described in [@lenz_konzeptionelle_2017].
 
-## create model folders
+## Create model folders
 
 As first step folders are created including a basic EROSION-3D model:
 ```{r}
@@ -239,12 +244,12 @@ path <- toolbox.e3d::create_folders.E3D(path = "C:/E3Dmodel_toolbox/")
 
 ## Soil set
 
-EROSION-3D needs at least two files for soil set:
+EROSION-3D needs at least two files for the soil set:
 
  - a landuse.asc, defining an ID for each raster cell,
  - and a soil_params.csv defining soil parameters for each ID in landuse.asc.
 
-To apply changes to soil parameters soil_params.csv can be read, modified and rewritten:
+To apply changes to soil parameters soil_params.csv can be read and modified:
 ```{r}
 soils <- read.csv(file.path(path,"soil/soil_params.csv"))[1,]
 
@@ -265,7 +270,7 @@ soils <- read.csv(file.path(path,"soil/soil_params.csv"))[1,]
   soils$COVER      <- 20
   soils$ERODIBIL   <- eros_cum
       
-# parameters derived automaticly by EROSION-3D are set to 0
+# parameters derived automatically by EROSION-3D are set to 0
   soils$THETA_R <- 0
   soils$THETA_S <- 0
   soils$ALPHA <- 0
@@ -291,12 +296,12 @@ The synthetic landuse.asc can be created with:
             path = file.path(path,"soil/"), filename = "landuse.asc")
 ```
 
-### soil set creation since version 3.2.0.9
+### Soil set creation since version 3.2.0.9
 
-Since version 3.2.0.9 EROSION-3D can preprocess the soil set from given landuse raster and soil_params file.
+Since version 3.2.0.9 EROSION-3D can pre-process the soil set from a given land use raster and a soil_params file.
 This allows the analysis of parameters derived by EROSION-3D (*.pid files, THETA_R, THETA_S, ALPHA, ...)
 
-The input files must be written to the model parent folder, defined in the *.par file and preprocessed by:
+The input files must be written to the model parent folder:
 ```{r}    
 # write files to parent folder
   write.csv(soils,file.path(path,"soil_params.csv"),
@@ -304,15 +309,21 @@ The input files must be written to the model parent folder, defined in the *.par
   toolbox.e3d::write.landuse.E3D(POLY_ID = soils$POLY_ID, length = 10,
             path = file.path(path), filename = "landuse.asc")
 
+```  
+
+They must be defined in the *.par file:
+```{r}    
 # read, modify and rewrite *.par
   run_par <- ini::read.ini(file.path(path,"run.par"))
   run_par[["Soil_landuse"]][["rdb_dat"]] <- file.path(path,"soil_params.csv")
   run_par[["Soil_landuse"]][["rdb_grd"]] <- file.path(path,"landuse.asc")
   ini::write.ini(run_par,filepath = file.path(path,"run.par"))
+```
 
-# preprocess soil set
+And can than be pre-processed by:
+```{r}    
+# pre-process soil set
   system2("e3d", paste0('/s "',normalizePath(file.path(path,"run.par")),'"'), wait=TRUE)
-  
 ```
 
 ```{r, include=F}
@@ -322,23 +333,23 @@ The input files must be written to the model parent folder, defined in the *.par
 
 
 
-## DEM and relief set
+## Digital elevation Model and relief set
 
-A syntethic DEM is created with:
+A synthetic DEM is created with:
 ```{r}
 toolbox.e3d::write.relief.E3D(POLY_ID = soils$POLY_ID, length = 10,slope = 11,
                               path = path, filename = "dem.asc")
 ```
-where **length** (in metres) and **slope** (inclination in %) define the slope geometry.
+where **length** (in meters) and **slope** (inclination in %) define the slope geometry.
 
-The number of elements in POLY_ID defines the number of indepentend slopes simulated parallel.
+The number of elements in POLY_ID defines the number of independent slopes simulated in parallel.
 
 The EROSION-3D relief set can be created with:
 ```{r}
 system2("e3d", paste0('/r "',normalizePath(file.path(path,"run.par")),'"'), wait=TRUE)
 ```
 
-As vertical DEM resolution is limited to 2 decimal digits (0.01 m) in EROSION-3D, steplike artifacts can be introduced.
+Since vertical DEM resolution is limited to 2 decimal digits (i.e. to 0.01 m) in EROSION-3D, step-like artifacts can be introduced.
 To check for such artifacts one can read unique values from the slope file created by EROSION-3D:
 ```{r}
 slope_E3D <- raster::raster(normalizePath(file.path(path,"relief/slope.asc")))
@@ -346,36 +357,38 @@ unique(raster::values(slope_E3D))
 ```
 If only one value is returned all slope values are equal and no step artifacts were introduced.
 
-## Create rainfile
+## Create rainfall file
 
 An EROSION-3D compatible rainfall file can be written by:
 ```{r}
-# 30 minutes * 60 seconds/minute
 toolbox.e3d::write.rainfile.E3D(time = c(0,30*60), intens = c(0.5,0), path,
                                 filename = "rain_e3d.csv")
 ```
-**time** and **intens** are numeric vectors of equal length.
-**time** gives the timesteps in seconds, at which rainfall intensities changes occure.
-**intens** gives the rainfall intensity for the following time period in mm/min.
+
+ - **Time** and **intens** are numeric vectors of equal length.
+ - **Time** gives the time steps in seconds, at which rainfall-intensity changes occurs.
+ - **Intens** gives the rainfall-intensity for the following time period in mm/min.
 
 ## Run calculation
 Once all input files are prepared the simulation can be run:
 ```{r}
+# command-line call to run EROSION-3D
 system2("e3d", paste0('/c "',normalizePath(file.path(path,"run.par")),'"'), wait=TRUE)
 ```
 
-And results can be analyzed:
+Afterwards, the results can be analyzed:
 ```{r}
-#read runoff in litres (*1000)
+#read runoff in liters (*1000)
 runoff <- raster::raster(file.path(path,"result/sum_q.asc"))[,1]*1000
 sed <- raster::raster(file.path(path,"result/sum_sedvol.asc"))[,1]
 
 cbind(soils[,c("POLY_ID","SKINFACTOR")], runoff, sed)
 ```
-The hypothetical results show, that runoff and soil loss calculated with skinfactor fitted to cumulative runoff meet the expectations (100 l runoff, 1 kg soil loss) quite well, whereas the results calculated with skinfactor fitted to infiltration rate are less than half the expected value.
 
-## delete model folder
-To clear workspace and delete all model files:
+The hypothetical results show, that runoff and soil loss calculated with the skinfactor fitted to cumulative runoff meet the expectations (100 l runoff, 1 kg soil loss) quite well, whereas the results calculated with the skinfactor fitted to infiltration rate are less than half the expected value.
+
+## Delete model folder
+To clear the work space and delete all model files run:
 ```{r}
 unlink(file.path("C:/E3Dmodel_toolbox/"), force = T, recursive = T)
 ```

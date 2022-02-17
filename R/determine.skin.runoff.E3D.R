@@ -15,7 +15,7 @@
 #' @param plotwidth numeric value, width of the experimental plot, CumRunoff will be normalized to one meter width using this parameter
 #' @param plotlength integer value, length of experimental plot, needs to be an integer due to spatial resolution of 1 meter in E3D
 #' @param slope integer value, mean slope of experimental plot in percent
-#' @param intensity numeric vector, rainfall intensity of preceding time interval - corespondeces to endmin
+#' @param intensity numeric vector, rainfall intensity of preceding time interval - correspondences to endmin
 #' @param endmin numeric vector, duration since start of rainfall experiment in full minutes, length must equal length of intensity
 #' @param ponding logical TRUE means ponding option is used, FALSE - is not used in E3D, ponding limits amount of infiltrating water to available water
 #' @param simlines integer value, number of parallel calculated plots, higher numbers decrease number of iteration steps with E3D, but increases number of write-read operations
@@ -86,13 +86,7 @@ determine.skin.runoff.E3D <- function(Cl, Si, Sa, Corg, Bulk, Moist, CumRunoff, 
       system2("e3d", paste0('/c "',normalizePath(file.path(path,"model/run.par")),'"'), wait=TRUE)
 
       #check and read possible output formats of E3D
-      if(!file.exists(file.path(path,"model/result/sum_q.asc")))
-        {
-          if(!file.exists(file.path(path,"model/result/sum_q.sdat")))
-            {stop("Can't read result set. Please check that standard output files in E3D are either *.asc or *.sdat.")}else
-            { runoff <- raster::raster(file.path(path,"model/result/sum_q.sdat"))[,1]*1000 }
-        }else
-        { runoff <- raster::raster(file.path(path,"model/result/sum_q.asc"))[,1]*1000 }
+      runoff <- read_result.E3D("sum_q", modelpath = path)[,1]*1000
 
       skinlower <- soils$SKINFACTOR[Position(function(x){CumRunoff<x},runoff, right = TRUE)]
       skinupper <- soils$SKINFACTOR[Position(function(x){CumRunoff>x},runoff)]

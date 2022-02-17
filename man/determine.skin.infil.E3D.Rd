@@ -39,7 +39,7 @@ determine.skin.infil.E3D(
 
 \item{infilrate}{numeric value, infiltration rate is the fitting target of this function}
 
-\item{intensity}{numeric vector, rainfall intensity of preceding time interval - corespondeces to endmin}
+\item{intensity}{numeric vector, rainfall intensity of preceding time interval - correspondences to endmin}
 
 \item{plotwidth}{numeric value, width of the experimental plot, CumRunoff will be normalized to one meter width using this parameter}
 
