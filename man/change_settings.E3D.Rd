@@ -10,7 +10,8 @@ change_settings.E3D(
   module = NA,
   setting = NA,
   value = NA,
-  setpath = TRUE
+  setpath = TRUE,
+  modify_existend = FALSE
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ change_settings.E3D(
 \item{value}{character vector, defines value to be changed to}
 
 \item{setpath}{boolean, shortcut to set working directory for E3D - if TRUE the path will be written as project path for rain, DEM, soil and result}
+
+\item{modify_existend}{boolean, if FALSE *.par file is created from scratch, so previous modifications are overwritten, TRUE keeps previous mods}
 }
 \value{
 none, *.par file is written

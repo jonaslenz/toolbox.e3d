@@ -8,15 +8,22 @@
 #' @param path folder path in which file will be written
 #' @param filename name of created file, should be *.par
 #' @param setpath boolean, shortcut to set working directory for E3D - if TRUE the path will be written as project path for rain, DEM, soil and result
+#' @param modify_existend boolean, if FALSE *.par file is created from scratch, so previous modifications are overwritten, TRUE keeps previous mods
 #' @export
 #' @return none, *.par file is written
 #' @importFrom ini read.ini
 #' @importFrom ini write.ini
 #'
 
-change_settings.E3D <- function(path = NA, filename = "model/run.par", module = NA, setting = NA, value = NA, setpath = TRUE)
+change_settings.E3D <- function(path = NA, filename = "model/run.par", module = NA, setting = NA, value = NA, setpath = TRUE, modify_existend = FALSE)
 {
-  standard_ini <- ini::read.ini(system.file("run.par", package = "toolbox.e3d"))
+  if(modify_existend)
+  {
+    standard_ini <- ini::read.ini(filepath = file.path(path,filename))
+  }else
+  {
+    standard_ini <- ini::read.ini(system.file("run.par", package = "toolbox.e3d"))
+  }
 
   if(!missing(setting) & !missing(value) & !missing(module) & length(module) ==length(setting) &length(setting)==length(value))
   {
