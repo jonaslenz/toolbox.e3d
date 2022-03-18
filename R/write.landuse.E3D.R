@@ -24,7 +24,7 @@ write.landuse.E3D <- function(POLY_ID = c(1,2,3),length=50, path, filename = "/m
   if(split_by_na)
   {
     # solution from https://stackoverflow.com/questions/44465841/insert-na-elements-in-vector
-    POLY_ID <- c(sapply(POLY_ID, function(x) c(NA,x)))
+    POLY_ID <- c(sapply(POLY_ID, function(x) c(NA,x)), NA)
   }
   rows <- length(POLY_ID)
 

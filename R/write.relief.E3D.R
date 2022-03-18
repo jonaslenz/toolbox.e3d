@@ -25,12 +25,16 @@ write.relief.E3D <- function(POLY_ID, length, slope, path, filename = "dem.asc",
   if(split_by_na)
   {
     # solution from https://stackoverflow.com/questions/44465841/insert-na-elements-in-vector
-    POLY_ID <- c(sapply(POLY_ID, function(x) c(NA,x)))
+    POLY_ID <- c(sapply(POLY_ID, function(x) c(NA,x)), NA)
   }
   rows <- length(POLY_ID)
 
+  elevation <- raster(resolution = resolution, xmn=0, xmx=length, ymn=0, ymx=rows*resolution,crs="+proj=robin +datum=WGS84",
+                      vals=rep((1:(length/resolution))*slope/100*resolution, times=rows))
+  elevation[which(is.na(POLY_ID)),] <- NA
+
 writeRaster(
-  raster(resolution = resolution, xmn=0, xmx=length, ymn=0, ymx=rows*resolution,crs="+proj=robin +datum=WGS84", vals=rep((1:(length/resolution))*slope/100*resolution, times=rows)),
+  elevation,
   filename = file.path(path,filename),
   format ="ascii",
   overwrite=TRUE
