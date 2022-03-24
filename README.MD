@@ -1,7 +1,9 @@
 # toolbox.e3d
 
-A open-source (GPL-3) R wrapper package to the soil erosion modelling tool EROSION-3D (available from Geognostics at http://www.geognostics.de/e3d_demo.html).
-The package interacts via command line for easy and reproducable work with EROSION-3D.
+Currently support for openLISEM (V6.83) will be implemented step by step.
+
+An open-source (GPL-3) R wrapper package to the soil erosion modelling tool EROSION-3D (available from Geognostics at http://www.geognostics.de/e3d_demo.html).
+The package interacts via command line for easy and reproducible work with EROSION-3D.
 
 ## Installation
 
@@ -27,4 +29,4 @@ install.packages("[...path to downloaded file...]/toolbox.e3d_0.0.0.90.tar.gz", 
 - set defined matrix potential for infiltration sub model
 
 Further functions planned to be included:
-- reproducable catchment modelling
+- reproducible catchment modelling
