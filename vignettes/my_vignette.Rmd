@@ -99,12 +99,12 @@ For fully reproducible results, synthetic land-use and Digital Elevation Models 
 Multiple independent plots - identical in relief but differing in target calibration parameter - are calculated simultaneously.
 The model output is analyzed and used to iterate calibration parameter values, until a certain accuracy is reached.
 
-## Fitting of skinfactor to different calibration targets
+## Determination of skinfactor for different calibration targets
 
 The skinfactor is a calibration parameter to saturated hydraulic conductivity in the infiltration submodule in EROSION-3D.
-It can be fitted to the cumulative runoff from the plot or to an infiltration rate at a certain time step.
+It can be determined for the fitting target cumulative runoff from the plot or for an infiltration rate at a certain time step.
 
-### Calibration target cumulative runoff
+### Fitting target cumulative runoff
 
 To fit the calculated to the measured cumulative runoff for an experiment on a soil with
 
@@ -146,7 +146,7 @@ toolbox.e3d::determine.skin.runoff.E3D(Cl = 30, Si = 40, Sa = 30,
 skin_cum
 ```
 
-### Calibration target infiltration rate
+### Fitting target infiltration rate
 
 Using the same values as in the preceding example
 with a differing fitting target of:
@@ -166,15 +166,15 @@ toolbox.e3d::determine.skin.infil.E3D(Cl = 30, Si = 40, Sa = 30,
 skin_inf
 ```
 
-## Fitting of resistance to erosion to different calibration targets
+## Determination of resistance to erosion for different calibration targets
 
 Resistance to erosion is a calibration parameter of the particle detachment calculation in the erosion submodule in EROSION-3D.
-It can be fitted to the cumulative soil loss from the plot or to a sediment concentration at a certain time step.
+It can be determined for the fitting target cumulative soil loss from the plot or to a sediment concentration at a certain time step.
 
 The erosion submodule of EROSION-3D uses nine grain-size fractions instead of the three used in the infiltration submodule.
 Therefore **Cl**, **Si** and **Sa** are separated in fine, middle and coarse fractions for the determination functions.
 
-### Calibration target cumulative soil loss
+### Fitting target cumulative soil loss
 
 To fit the calculated to the measured cumulative soil loss for an experiment on a soil with
 
@@ -221,7 +221,7 @@ eros_cum <-
 eros_cum
 ```
 
-### Calibration target sediment concentration
+### Fitting target sediment concentration
 
 To be added ...
 
@@ -385,7 +385,7 @@ sed <- raster::raster(file.path(path,"result/sum_sedvol.asc"))[,1]
 cbind(soils[,c("POLY_ID","SKINFACTOR")], runoff, sed)
 ```
 
-The hypothetical results show, that runoff and soil loss calculated with the skinfactor fitted to cumulative runoff meet the expectations (100 l runoff, 1 kg soil loss) quite well, whereas the results calculated with the skinfactor fitted to infiltration rate are less than half the expected value.
+The hypothetical results show, that runoff and soil loss calculated with the skinfactor determined for the fitting target cumulative runoff meet the expectations (100 l runoff, 1 kg soil loss) quite well, whereas the results calculated with the skinfactor determined for the fitting target infiltration rate are less than half the expected value.
 
 ## Delete model folder
 To clear the work space and delete all model files run:
