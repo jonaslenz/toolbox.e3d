@@ -349,13 +349,15 @@ The EROSION-3D relief set can be created with:
 system2("e3d", paste0('/r "',normalizePath(file.path(path,"run.par")),'"'), wait=TRUE)
 ```
 
-Since vertical DEM resolution is limited to 2 decimal digits (i.e. to 0.01 m) in EROSION-3D, step-like artifacts can be introduced.
+Since vertical DEM resolution is limited to 2 decimal digits (i.e. to 0.01 m) in EROSION-3D by default, step-like artifacts can be introduced.
 To check for such artifacts one can read unique values from the slope file created by EROSION-3D:
 ```{r}
 slope_E3D <- raster::raster(normalizePath(file.path(path,"relief/slope.asc")))
 unique(raster::values(slope_E3D))
 ```
-If only one value is returned all slope values are equal and no step artifacts were introduced.
+If only one value is returned all slope values are equal and no step artifacts were introduced.  
+The default vertical accuracy of EROSION-3D can be modified by the Relief option "dem_roundval" in the `*.run` file.
+The default value of 100 implies a vertical accuracy of 0.01 m, while a value of 1000 would imply a vertical accuracy of 0.001 m. 
 
 ## Create rainfall file
 
