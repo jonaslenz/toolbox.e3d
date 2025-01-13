@@ -73,6 +73,12 @@ devtools::install_github("jonaslenz/toolbox.e3d")
 
 EROSION-3D needs to be installed and licensed separately, please refer to the EROSION-3D web page or the handbook for specific installation instructions [@von_werner_erosion-3d_2003].
 
+You can load toolbox.e3d and show the current environment by:
+```{r load-toolbox}
+library("toolbox.e3d")
+sessionInfo()
+```
+
 ## Test setup
 
 Once EROSION-3D is installed and activated and toolbox.e3d is installed, their interaction can be tested using:
