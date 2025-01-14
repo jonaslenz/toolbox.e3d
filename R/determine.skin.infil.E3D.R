@@ -21,15 +21,13 @@
 #' @param simlines integer value, number of parallel calculated plots, higher numbers decrease number of iteration steps with E3D, but increases number of write-read operations
 #' @param path path to modeling directory, default is a temporary directory
 #' @param silent logical, if TRUE skinfactor iteration steps will be written as message
-#' @param version version number can be set manually if known to reduce calls to E3D and save processing time
 #' @importFrom raster raster
 #' @importFrom utils read.csv
 #' @export
 #' @examples determine.skin.infil.E3D(Cl = 30, Si = 40, Sa = 30, Corg = 1.3, Bulk = 1300, Moist = 22, infilrate = 0.2, intensity = 0.5, plotwidth = 1, plotlength = 10, slope = 10, endmin = 30, ponding = TRUE, silent = FALSE)
 #'
-determine.skin.infil.E3D <- function(Cl, Si, Sa, Corg, Bulk, Moist, infilrate, intensity, plotwidth = 1, plotlength = 2, slope=5, endmin, ponding =FALSE, simlines = 100, path = tempdir(), silent=TRUE, version = get_version.E3D())
+determine.skin.infil.E3D <- function(Cl, Si, Sa, Corg, Bulk, Moist, infilrate, intensity, plotwidth = 1, plotlength = 2, slope=5, endmin, ponding =FALSE, simlines = 100, path = "C:\\Users\\Jonas.Lenz\\Desktop\\e3d-dev\\e3dwebservice\\e3dtestdata\\skin", silent=TRUE)
 {
-  if(!ponding & numeric_version(version)<"3.2.0.9"){stop("Ponding option can be turned off only in E3D-version after 3.2.0.9")}
 
   if(infilrate >= tail(intensity,1))
   {
@@ -61,7 +59,14 @@ determine.skin.infil.E3D <- function(Cl, Si, Sa, Corg, Bulk, Moist, infilrate, i
   soils$POLY_ID<- 1:simlines
 
   write.relief.E3D(POLY_ID = soils$POLY_ID,plotlength,round(slope),file.path(path,"model/"))
-  system2("e3d", paste0('/r "',normalizePath(file.path(path,"model/run.par")),'"'), wait=TRUE)
+  rq <- list(project= "/e3dtestdata/skin/model/run.par",
+             dem= "/e3dtestdata/skin/model/dem.asc",
+             stream= "",
+             pdir= "",
+             outputdir= "/e3dtestdata/skin/model/relief/",
+             overwrite= TRUE)
+  r <- httr::POST("http://localhost:8010/e3d/reliefdataset/", body = rq, encode = "json")
+  if(r$status_code!=200){stop()}
 
   utils::write.csv(soils,file.path(path,"model/soil/soil_params.csv"), row.names = FALSE, quote = FALSE)
   write.landuse.E3D(POLY_ID = soils$POLY_ID,length = plotlength, path = file.path(path,"model/soil/"), filename = "landuse.asc")
@@ -75,8 +80,8 @@ determine.skin.infil.E3D <- function(Cl, Si, Sa, Corg, Bulk, Moist, infilrate, i
     row.names = FALSE
     )
 
-  if(ponding){change_settings.E3D(path, filename = "model/run.par", module = c("WatchCell","WatchCell"), setting = c("WatchMethod","WatchCellList"), value = c("1",file.path(path,"model/watchcell.csv")))}
-  if(!ponding){change_settings.E3D(path, filename = "model/run.par", module = c("WatchCell","WatchCell","Infiltration_model"), setting = c("WatchMethod","WatchCellList","Ponding"), value = c("1",file.path(path,"model/watchcell.csv"),"0"))}
+  if(ponding){change_settings.E3D(path, filename = "model/run.par", module = c("WatchCell","WatchCell"), setting = c("WatchMethod","WatchCellList"), value = c("1","/e3dtestdata/skin/model/watchcell.csv"))}
+  if(!ponding){change_settings.E3D(path, filename = "model/run.par", module = c("WatchCell","WatchCell","Infiltration_model"), setting = c("WatchMethod","WatchCellList","Ponding"), value = c("1","/e3dtestdata/skin/model/watchcell.csv","0"))}
 
 
   #iteration of Skinfaktor
@@ -90,7 +95,27 @@ determine.skin.infil.E3D <- function(Cl, Si, Sa, Corg, Bulk, Moist, infilrate, i
 
       utils::write.csv(soils,file.path(path,"model/soil/soil_params.csv"), row.names = FALSE, quote = FALSE)
 
-      system2("e3d", paste0('/c "',normalizePath(file.path(path,"model/run.par")),'"'), wait=TRUE)
+      rq <- list(project= "/e3dtestdata/skin/model/run.par",
+                 relief= "/e3dtestdata/skin/model/relief",
+                 soil= "/e3dtestdata/skin/model/soil",
+                 rain= "/e3dtestdata/skin/model/rain_e3d.csv",
+                 znmeteo= "",
+                 etp= "",
+                 pdir= "",
+                 dem= "",
+                 stream= "",
+                 wind= "",
+                 winddirection= "",
+                 temp= "",
+                 we= "",
+                 ssd= "",
+                 snowage= "",
+                 outputdir= "/e3dtestdata/skin/model/result",
+                 overwrite= TRUE)
+      r <- httr::POST("http://localhost:8010/e3d/simulate/lo/direct/", body = rq, encode = "json")
+      if(r$status_code!=200){stop()}
+
+## wie bekomme ich den Webservice dazu das infilfile zu schreiben?
 
 infilfile <- read.csv(file.path(path,"model/result/infil.csv"), stringsAsFactors = FALSE)
 reas <- as.POSIXlt(paste(as.Date(infilfile$Date, format = "%Y.%m.%d"),infilfile$Time))

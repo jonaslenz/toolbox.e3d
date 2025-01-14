@@ -28,10 +28,10 @@ determine.eros.cumsed.E3D(
   endmin,
   ponding = FALSE,
   simlines = 100,
-  path = tempdir(),
+  path =
+    "C:\\\\Users\\\\Jonas.Lenz\\\\Desktop\\\\e3d-dev\\\\e3dwebservice\\\\e3dtestdata\\\\skin",
   silent = TRUE,
   resolution = 1,
-  version = get_version.E3D(),
   errorcode = FALSE
 )
 }
@@ -87,8 +87,6 @@ determine.eros.cumsed.E3D(
 \item{silent}{logical, if TRUE skinfactor iteration steps will be written as message}
 
 \item{resolution}{set spatial resolution [m]}
-
-\item{version}{version number can be set manually if known to reduce calls to E3D and save processing time}
 
 \item{errorcode}{logical, if TRUE an errorcode is returned instead of NA for experiments, which can not be determined: -1 No runoff, -2 to high sediment concentration}
 }

@@ -31,7 +31,6 @@
 #' @param simlines integer value, number of parallel calculated plots, higher numbers decrease number of iteration steps with E3D, but increases number of write-read operations
 #' @param path path to modeling directory, default is a temporary directory
 #' @param silent logical, if TRUE skinfactor iteration steps will be written as message
-#' @param version version number can be set manually if known to reduce calls to E3D and save processing time
 #' @param errorcode logical, if TRUE an errorcode is returned instead of NA for experiments, which can not be determined: -1 No runoff, -2 to high sediment concentration
 #' @importFrom raster raster
 #' @importFrom utils read.csv
@@ -39,10 +38,8 @@
 #' @examples determine.eros.cumsed.E3D(FCl=5,MCl=10,CCl=15, FSi=10,MSi=20,CSi=10, FSa=15,MSa=10,CSa=5, Corg = 1.3, Bulk = 1300, Moist = 22, Skin = 0.005,Roughness=0.05, Cover = 20, Soilloss = 1, intensity = 0.5, plotwidth = 1, plotlength = 10, slope = 10, endmin = 30, ponding = TRUE)
 #' @examples determine.eros.cumsed.E3D(FCl=5,MCl=10,CCl=15, FSi=10,MSi=20,CSi=10, FSa=15,MSa=10,CSa=5, Corg = 1.3, Bulk = 1300, Moist = 22, Skin = 0.005,Roughness=0.05, Cover = 20, Soilloss = 1, intensity = 0.5, plotwidth = 1, plotlength = 10, slope = 10, endmin = 30, ponding = FALSE)
 #'
-determine.eros.cumsed.E3D <- function(FCl,MCl,CCl, FSi,MSi,CSi, FSa,MSa,CSa, Corg, Bulk, Moist, Skin, Roughness, Cover, Soilloss, intensity, plotwidth, plotlength, slope, endmin, ponding =FALSE, simlines = 100, path = tempdir(), silent=TRUE, resolution = 1, version = get_version.E3D(), errorcode = FALSE)
+determine.eros.cumsed.E3D <- function(FCl,MCl,CCl, FSi,MSi,CSi, FSa,MSa,CSa, Corg, Bulk, Moist, Skin, Roughness, Cover, Soilloss, intensity, plotwidth, plotlength, slope, endmin, ponding =FALSE, simlines = 100, path = "C:\\Users\\Jonas.Lenz\\Desktop\\e3d-dev\\e3dwebservice\\e3dtestdata\\skin", silent=TRUE, resolution = 1, errorcode = FALSE)
 {
-  if(!ponding & numeric_version(version)<"3.2.0.9"){stop("Ponding option can be turned off only in E3D-version after 3.2.0.9")}
-
   create_folders.E3D(path, overwrite = TRUE)
 
   soils <- read.csv(file.path(path,"model/soil/soil_params.csv"))[1,]
@@ -70,7 +67,14 @@ determine.eros.cumsed.E3D <- function(FCl,MCl,CCl, FSi,MSi,CSi, FSa,MSa,CSa, Cor
   soils$POLY_ID<- 1:simlines
 
   write.relief.E3D(POLY_ID = soils$POLY_ID,plotlength,round(slope),file.path(path,"model/"), resolution = resolution)
-  system2("e3d", paste0('/r "',normalizePath(file.path(path,"model/run.par")),'"'), wait=TRUE)
+  rq <- list(project= "/e3dtestdata/skin/model/run.par",
+             dem= "/e3dtestdata/skin/model/dem.asc",
+             stream= "",
+             pdir= "",
+             outputdir= "/e3dtestdata/skin/model/relief/",
+             overwrite= TRUE)
+  r <- httr::POST("http://localhost:8010/e3d/reliefdataset/", body = rq, encode = "json")
+  if(r$status_code!=200){stop()}
 
 
   utils::write.csv(soils,file.path(path,"model/soil/soil_params.csv"), row.names = FALSE, quote = FALSE)
@@ -94,7 +98,25 @@ determine.eros.cumsed.E3D <- function(FCl,MCl,CCl, FSi,MSi,CSi, FSa,MSa,CSa, Cor
 
       utils::write.csv(soils,file.path(path,"model/soil/soil_params.csv"), row.names = FALSE, quote = FALSE)
 
-      system2("e3d", paste0('/c "',normalizePath(file.path(path,"model/run.par")),'"'), wait=TRUE)
+      rq <- list(project= "/e3dtestdata/skin/model/run.par",
+                 relief= "/e3dtestdata/skin/model/relief",
+                 soil= "/e3dtestdata/skin/model/soil",
+                 rain= "/e3dtestdata/skin/model/rain_e3d.csv",
+                 znmeteo= "",
+                 etp= "",
+                 pdir= "",
+                 dem= "",
+                 stream= "",
+                 wind= "",
+                 winddirection= "",
+                 temp= "",
+                 we= "",
+                 ssd= "",
+                 snowage= "",
+                 outputdir= "/e3dtestdata/skin/model/result",
+                 overwrite= TRUE)
+      r <- httr::POST("http://localhost:8010/e3d/simulate/lo/direct/", body = rq, encode = "json")
+      if(r$status_code!=200){stop()}
 
       #check and read possible output formats of E3D
       runoff <- read_result.E3D("sum_q", modelpath = path)[,1]*1000

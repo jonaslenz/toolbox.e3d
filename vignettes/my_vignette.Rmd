@@ -39,9 +39,11 @@ Each manual change in modeling is seen as non-reproducible or at least failure-p
 The toolbox.e3d was developed with the 32-bit EROSION-3D version 3.2.0.9.
 As the command-line interaction was sparsely used up to now, several functions may not work with older versions of EROSION-3D.
 
+## Use EROSION-3D Webservice (#webservice)
 
 ## Command-line interaction with EROSION-3D
 
+The command-line interaction is deprecated, you can use the [web-service](webservice) instead!
 There are three basic commands to run EROSION-3D from command-line [@von_werner_erosion-3d_2007]:
 
  - '/c' for calculation
@@ -77,7 +79,7 @@ EROSION-3D needs to be installed and licensed separately, please refer to the ER
 
 Once EROSION-3D is installed and activated and toolbox.e3d is installed, their interaction can be tested using:
 
-```{r}
+```{r, eval = FALSE}
 toolbox.e3d::get_version.E3D()
 ```
 
@@ -154,7 +156,7 @@ with a differing fitting target of:
 - 0.2 mm/min infiltration rate **infilrate** after 30 minutes **endmin**
 
 the skinfactor can be determined by:
-```{r}
+```{r, eval = FALSE}
 skin_inf <-
 toolbox.e3d::determine.skin.infil.E3D(Cl = 30, Si = 40, Sa = 30,
                          Corg = 1.3, Bulk = 1300, Moist = 22,
@@ -238,7 +240,7 @@ The models are run on synthetic elevation and land use models with independent s
 ## Create model folders
 
 As first step folders are created including a basic EROSION-3D model:
-```{r}
+```{r, eval = FALSE}
 path <- toolbox.e3d::create_folders.E3D(path = "C:/E3Dmodel_toolbox/")
 ```
 
@@ -250,7 +252,7 @@ EROSION-3D needs at least two files for the soil set:
  - and a soil_params.csv defining soil parameters for each ID in landuse.asc.
 
 To apply changes to soil parameters soil_params.csv can be read and modified:
-```{r}
+```{r, eval = FALSE}
 soils <- read.csv(file.path(path,"soil/soil_params.csv"))[1,]
 
 # soil parameters are set according to example in parameter determination
@@ -291,7 +293,7 @@ soils <- read.csv(file.path(path,"soil/soil_params.csv"))[1,]
 ```
 
 The synthetic landuse.asc can be created with:
-```{r}    
+```{r, eval = FALSE}  
   toolbox.e3d::write.landuse.E3D(POLY_ID = soils$POLY_ID, length = 10,
             path = file.path(path,"soil/"), filename = "landuse.asc")
 ```
@@ -302,7 +304,7 @@ Since version 3.2.0.9 EROSION-3D can pre-process the soil set from a given land 
 This allows the analysis of parameters derived by EROSION-3D (*.pid files, THETA_R, THETA_S, ALPHA, ...)
 
 The input files must be written to the model parent folder:
-```{r}    
+```{r, eval = FALSE}
 # write files to parent folder
   write.csv(soils,file.path(path,"soil_params.csv"),
             row.names = FALSE, quote = FALSE)
@@ -312,7 +314,7 @@ The input files must be written to the model parent folder:
 ```  
 
 They must be defined in the *.par file:
-```{r}    
+```{r, eval = FALSE}
 # read, modify and rewrite *.par
   run_par <- ini::read.ini(file.path(path,"run.par"))
   run_par[["Soil_landuse"]][["rdb_dat"]] <- file.path(path,"soil_params.csv")
@@ -321,12 +323,12 @@ They must be defined in the *.par file:
 ```
 
 And can than be pre-processed by:
-```{r}    
+```{r, eval = FALSE}
 # pre-process soil set
   system2("e3d", paste0('/s "',normalizePath(file.path(path,"run.par")),'"'), wait=TRUE)
 ```
 
-```{r, include=F}
+```{r, eval = FALSE, include=F}
 # read resulting soil_params
   soilsbyE3D <- read.csv(file.path(path,"soil/soil_params.csv"))
 ```
@@ -336,7 +338,7 @@ And can than be pre-processed by:
 ## Digital elevation Model and relief set
 
 A synthetic DEM is created with:
-```{r}
+```{r, eval = FALSE}
 toolbox.e3d::write.relief.E3D(POLY_ID = soils$POLY_ID, length = 10,slope = 11,
                               path = path, filename = "dem.asc")
 ```
@@ -345,13 +347,13 @@ where **length** (in meters) and **slope** (inclination in %) define the slope g
 The number of elements in POLY_ID defines the number of independent slopes simulated in parallel.
 
 The EROSION-3D relief set can be created with:
-```{r}
+```{r, eval = FALSE}
 system2("e3d", paste0('/r "',normalizePath(file.path(path,"run.par")),'"'), wait=TRUE)
 ```
 
 Since vertical DEM resolution is limited to 2 decimal digits (i.e. to 0.01 m) in EROSION-3D by default, step-like artifacts can be introduced.
 To check for such artifacts one can read unique values from the slope file created by EROSION-3D:
-```{r}
+```{r, eval = FALSE}
 slope_E3D <- raster::raster(normalizePath(file.path(path,"relief/slope.asc")))
 unique(raster::values(slope_E3D))
 ```
@@ -362,7 +364,7 @@ The default value of 100 implies a vertical accuracy of 0.01 m, while a value of
 ## Create rainfall file
 
 An EROSION-3D compatible rainfall file can be written by:
-```{r}
+```{r, eval = FALSE}
 toolbox.e3d::write.rainfile.E3D(time = c(0,30*60), intens = c(0.5,0), path,
                                 filename = "rain_e3d.csv")
 ```
@@ -373,13 +375,13 @@ toolbox.e3d::write.rainfile.E3D(time = c(0,30*60), intens = c(0.5,0), path,
 
 ## Run calculation
 Once all input files are prepared the simulation can be run:
-```{r}
+```{r, eval = FALSE}
 # command-line call to run EROSION-3D
 system2("e3d", paste0('/c "',normalizePath(file.path(path,"run.par")),'"'), wait=TRUE)
 ```
 
 Afterwards, the results can be analyzed:
-```{r}
+```{r, eval = FALSE}
 #read runoff in liters (*1000)
 runoff <- raster::raster(file.path(path,"result/sum_q.asc"))[,1]*1000
 sed <- raster::raster(file.path(path,"result/sum_sedvol.asc"))[,1]
@@ -391,7 +393,7 @@ The hypothetical results show, that runoff and soil loss calculated with the ski
 
 ## Delete model folder
 To clear the work space and delete all model files run:
-```{r}
+```{r, eval = FALSE}
 unlink(file.path("C:/E3Dmodel_toolbox/"), force = T, recursive = T)
 ```
 

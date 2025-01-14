@@ -19,9 +19,9 @@ determine.skin.infil.E3D(
   endmin,
   ponding = FALSE,
   simlines = 100,
-  path = tempdir(),
-  silent = TRUE,
-  version = get_version.E3D()
+  path =
+    "C:\\\\Users\\\\Jonas.Lenz\\\\Desktop\\\\e3d-dev\\\\e3dwebservice\\\\e3dtestdata\\\\skin",
+  silent = TRUE
 )
 }
 \arguments{
@@ -56,8 +56,6 @@ determine.skin.infil.E3D(
 \item{path}{path to modeling directory, default is a temporary directory}
 
 \item{silent}{logical, if TRUE skinfactor iteration steps will be written as message}
-
-\item{version}{version number can be set manually if known to reduce calls to E3D and save processing time}
 }
 \description{
 This function calibrates parameter skinfactor that calculated infiltration rate equals the measured value from a rainfall experiment.
