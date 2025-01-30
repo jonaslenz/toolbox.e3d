@@ -26,7 +26,7 @@
 #' @export
 #' @examples determine.skin.infil.E3D(Cl = 30, Si = 40, Sa = 30, Corg = 1.3, Bulk = 1300, Moist = 22, infilrate = 0.2, intensity = 0.5, plotwidth = 1, plotlength = 10, slope = 10, endmin = 30, ponding = TRUE, silent = FALSE)
 #'
-determine.skin.infil.E3D <- function(Cl, Si, Sa, Corg, Bulk, Moist, infilrate, intensity, plotwidth = 1, plotlength = 2, slope=5, endmin, ponding =FALSE, simlines = 100, path = "C:\\Users\\Jonas.Lenz\\Desktop\\e3d-dev\\e3dwebservice\\e3dtestdata\\skin", silent=TRUE)
+determine.skin.infil.E3D <- function(Cl, Si, Sa, Corg, Bulk, Moist, infilrate, intensity, plotwidth = 1, plotlength = 2, slope=5, endmin, ponding =FALSE, simlines = 100, path = tempdir(), silent=TRUE, url = "http://e3dwebservice_dev:8010/")
 {
 
   if(infilrate >= tail(intensity,1))
@@ -65,7 +65,7 @@ determine.skin.infil.E3D <- function(Cl, Si, Sa, Corg, Bulk, Moist, infilrate, i
              pdir= "",
              outputdir= "/e3dtestdata/skin/model/relief/",
              overwrite= TRUE)
-  r <- httr::POST("http://localhost:8010/e3d/reliefdataset/", body = rq, encode = "json")
+  r <- httr::POST(paste0(url,"/reliefdataset/"), body = rq, encode = "json")
   if(r$status_code!=200){stop()}
 
   utils::write.csv(soils,file.path(path,"model/soil/soil_params.csv"), row.names = FALSE, quote = FALSE)
@@ -112,7 +112,7 @@ determine.skin.infil.E3D <- function(Cl, Si, Sa, Corg, Bulk, Moist, infilrate, i
                  snowage= "",
                  outputdir= "/e3dtestdata/skin/model/result",
                  overwrite= TRUE)
-      r <- httr::POST("http://localhost:8010/e3d/simulate/lo/direct/", body = rq, encode = "json")
+      r <- httr::POST(paste0(url,"/e3d/simulate/lo/direct/"), body = rq, encode = "json")
       if(r$status_code!=200){stop()}
 
 ## wie bekomme ich den Webservice dazu das infilfile zu schreiben?

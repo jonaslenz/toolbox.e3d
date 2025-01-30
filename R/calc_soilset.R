@@ -42,8 +42,15 @@ calc_soilset <- function(soils = dummy_soilset(), intensity = 0.7, plotlength = 
 
   write.relief.E3D(POLY_ID = soils$POLY_ID, plotlength, round(slope),
                    file.path(path, "model/"), resolution = resolution)
-  system2("e3d", paste0("/r \"", normalizePath(file.path(path,
-                                                         "model/run.par")), "\""), wait = TRUE)
+  rq <- list(project= "/e3dtestdata/skin/model/run.par",
+             dem= "/e3dtestdata/skin/model/dem.asc",
+             stream= "",
+             pdir= "",
+             outputdir= "/e3dtestdata/skin/model/relief/",
+             overwrite= TRUE)
+  r <- httr::POST("http://localhost:8010/e3d/reliefdataset/", body = rq, encode = "json")
+  if(r$status_code!=200){stop()}
+
   if(pourpoint_obs)
     {
       write.pourpoint.E3D(soils$POLY_ID, plotlength,path = file.path(path, "model/relief/"), resolution = resolution)
@@ -65,9 +72,25 @@ calc_soilset <- function(soils = dummy_soilset(), intensity = 0.7, plotlength = 
 
   utils::write.csv(soils, file.path(path, "model/soil/soil_params.csv"),
                    row.names = FALSE, quote = FALSE)
-  system2("e3d", paste0("/c \"", normalizePath(file.path(path,
-                                                         "model/run.par")), "\""), wait = TRUE)
-
+  rq <- list(project= "/e3dtestdata/skin/model/run.par",
+             relief= "/e3dtestdata/skin/model/relief",
+             soil= "/e3dtestdata/skin/model/soil",
+             rain= "/e3dtestdata/skin/model/rain_e3d.csv",
+             znmeteo= "",
+             etp= "",
+             pdir= "",
+             dem= "",
+             stream= "",
+             wind= "",
+             winddirection= "",
+             temp= "",
+             we= "",
+             ssd= "",
+             snowage= "",
+             outputdir= "/e3dtestdata/skin/model/result",
+             overwrite= TRUE)
+  r <- httr::POST("http://localhost:8010/e3d/simulate/lo/direct/", body = rq, encode = "json")
+  if(r$status_code!=200){stop()}
   runoff <- read_result.E3D("sum_q", modelpath = path)[,1]*1000
   sed <- read_result.E3D("sum_sedvol", modelpath = path)[, 1]
 
