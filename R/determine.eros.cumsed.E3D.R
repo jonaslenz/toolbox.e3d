@@ -38,7 +38,7 @@
 #' @examples determine.eros.cumsed.E3D(FCl=5,MCl=10,CCl=15, FSi=10,MSi=20,CSi=10, FSa=15,MSa=10,CSa=5, Corg = 1.3, Bulk = 1300, Moist = 22, Skin = 0.005,Roughness=0.05, Cover = 20, Soilloss = 1, intensity = 0.5, plotwidth = 1, plotlength = 10, slope = 10, endmin = 30, ponding = TRUE)
 #' @examples determine.eros.cumsed.E3D(FCl=5,MCl=10,CCl=15, FSi=10,MSi=20,CSi=10, FSa=15,MSa=10,CSa=5, Corg = 1.3, Bulk = 1300, Moist = 22, Skin = 0.005,Roughness=0.05, Cover = 20, Soilloss = 1, intensity = 0.5, plotwidth = 1, plotlength = 10, slope = 10, endmin = 30, ponding = FALSE)
 #'
-determine.eros.cumsed.E3D <- function(FCl,MCl,CCl, FSi,MSi,CSi, FSa,MSa,CSa, Corg, Bulk, Moist, Skin, Roughness, Cover, Soilloss, intensity, plotwidth, plotlength, slope, endmin, ponding =FALSE, simlines = 100, path = "C:\\Users\\Jonas.Lenz\\Desktop\\e3d-dev\\e3dwebservice\\e3dtestdata\\skin", silent=TRUE, resolution = 1, errorcode = FALSE)
+determine.eros.cumsed.E3D <- function(FCl,MCl,CCl, FSi,MSi,CSi, FSa,MSa,CSa, Corg, Bulk, Moist, Skin, Roughness, Cover, Soilloss, intensity, plotwidth, plotlength, slope, endmin, ponding =FALSE, simlines = 100, path = tempdir(), silent=TRUE, resolution = 1, errorcode = FALSE, url = "http://e3dwebservice_dev:8010")
 {
   create_folders.E3D(path, overwrite = TRUE)
 
@@ -73,7 +73,7 @@ determine.eros.cumsed.E3D <- function(FCl,MCl,CCl, FSi,MSi,CSi, FSa,MSa,CSa, Cor
              pdir= "",
              outputdir= file.path(path,"model/relief/"),
              overwrite= TRUE)
-  r <- httr::POST("http://localhost:8010/e3d/reliefdataset/", body = rq, encode = "json")
+  r <- httr::POST(paste0(url,"/e3d/reliefdataset/"), body = rq, encode = "json")
   if(r$status_code!=200){stop()}
 
 
@@ -115,7 +115,7 @@ determine.eros.cumsed.E3D <- function(FCl,MCl,CCl, FSi,MSi,CSi, FSa,MSa,CSa, Cor
                  snowage= "",
                  outputdir= file.path(path,"model/result"),
                  overwrite= TRUE)
-      r <- httr::POST("http://localhost:8010/e3d/simulate/lo/direct/", body = rq, encode = "json")
+      r <- httr::POST(paste0(url,"/e3d/simulate/lo/direct/"), body = rq, encode = "json")
       if(r$status_code!=200){stop()}
 
       #check and read possible output formats of E3D
