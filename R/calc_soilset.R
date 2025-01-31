@@ -20,7 +20,7 @@
 #' @examples calc_soilset(soil_params)
 #'
 
-calc_soilset <- function(soils = dummy_soilset(), intensity = 0.7, plotlength = 22, slope = 9, endmin = 30, resolution = 1, ponding = FALSE, path = tempdir(), pourpoint_obs = FALSE, path_to_ini = "")
+calc_soilset <- function(soils = dummy_soilset(), intensity = 0.7, plotlength = 22, slope = 9, endmin = 30, resolution = 1, ponding = FALSE, path = tempdir(), pourpoint_obs = FALSE, path_to_ini = "", url = "http://e3dwebservice_dev:8010")
 {
   nms <- c("POLY_ID" ,"BLKDENSITY", "CORG", "INITMOIST", "FT", "MT", "GT", "FU", "MU", "GU", "FS", "MS", "GS", "SKINFACTOR", "ROUGHNESS", "COVER")
   Missing <- setdiff(nms, names(soils))  # Find names of missing columns
@@ -48,7 +48,7 @@ calc_soilset <- function(soils = dummy_soilset(), intensity = 0.7, plotlength = 
              pdir= "",
              outputdir= "/e3dtestdata/skin/model/relief/",
              overwrite= TRUE)
-  r <- httr::POST("http://localhost:8010/e3d/reliefdataset/", body = rq, encode = "json")
+  r <- httr::POST(paste0(url, "/e3d/reliefdataset/"), body = rq, encode = "json")
   if(r$status_code!=200){stop()}
 
   if(pourpoint_obs)
@@ -89,7 +89,7 @@ calc_soilset <- function(soils = dummy_soilset(), intensity = 0.7, plotlength = 
              snowage= "",
              outputdir= "/e3dtestdata/skin/model/result",
              overwrite= TRUE)
-  r <- httr::POST("http://localhost:8010/e3d/simulate/lo/direct/", body = rq, encode = "json")
+  r <- httr::POST(paste0(url, "/e3d/simulate/lo/direct/"), body = rq, encode = "json")
   if(r$status_code!=200){stop()}
   runoff <- read_result.E3D("sum_q", modelpath = path)[,1]*1000
   sed <- read_result.E3D("sum_sedvol", modelpath = path)[, 1]

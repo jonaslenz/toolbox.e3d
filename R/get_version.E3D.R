@@ -32,3 +32,22 @@ get_version.E3D <- function(build = FALSE, install_path = NA, relief.v = FALSE)
   }
   return(e3dversion);
 }
+
+
+#' gets version of E3D webservice
+#'
+#' Returns the version number of the E3D webservice, returned by its endpoint.
+#' @return string E3D version number
+#' @param url url to running service
+#' @export
+#' @examples
+#' get_version.E3D(127.0.0.1:8010)
+
+get_version.E3D.web <- function(url = "http://e3dwebservice_dev:8010")
+{
+  r <- httr::GET(paste0(url,"/e3d/version/"), encode = "json")
+  if(r$status_code!=200){stop()}
+  return(r$content)
+  #Hier wird ein HEX-String zurück gegeben, kein String, braucht noch decodierung!
+}
+

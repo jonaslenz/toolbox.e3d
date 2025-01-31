@@ -26,7 +26,7 @@
 #' @export
 #' @examples determine.skin.infil.E3D(Cl = 30, Si = 40, Sa = 30, Corg = 1.3, Bulk = 1300, Moist = 22, infilrate = 0.2, intensity = 0.5, plotwidth = 1, plotlength = 10, slope = 10, endmin = 30, ponding = TRUE, silent = FALSE)
 #'
-determine.skin.infil.E3D <- function(Cl, Si, Sa, Corg, Bulk, Moist, infilrate, intensity, plotwidth = 1, plotlength = 2, slope=5, endmin, ponding =FALSE, simlines = 100, path = tempdir(), silent=TRUE, url = "http://e3dwebservice_dev:8010/")
+determine.skin.infil.E3D <- function(Cl, Si, Sa, Corg, Bulk, Moist, infilrate, intensity, plotwidth = 1, plotlength = 2, slope=5, endmin, ponding =FALSE, simlines = 100, path = tempdir(), silent=TRUE, url = "http://e3dwebservice_dev:8010")
 {
 
   if(infilrate >= tail(intensity,1))
