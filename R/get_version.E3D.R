@@ -47,7 +47,6 @@ get_version.E3D.web <- function(url = "http://e3dwebservice_dev:8010")
 {
   r <- httr::GET(paste0(url,"/e3d/version/"), encode = "json")
   if(r$status_code!=200){stop()}
-  return(r$content)
-  #Hier wird ein HEX-String zurück gegeben, kein String, braucht noch decodierung!
+  return(rawToChar(r$content))
 }
 
