@@ -106,7 +106,7 @@ determine.skin.runoff.E3D <- function(Cl, Si, Sa, Corg, Bulk, Moist, CumRunoff, 
                  snowage= "",
                  outputdir= file.path(path,"model/result"),
                  overwrite= TRUE)
-      r <- httr::POST(paste0(url,"/simulate/lo/direct/"), body = rq, encode = "json")
+      r <- httr::POST(paste0(url,"/e3d/simulate/lo/direct/"), body = rq, encode = "json")
 
       if(r$status_code!=200){stop()}
 
