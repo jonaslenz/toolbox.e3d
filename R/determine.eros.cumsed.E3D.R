@@ -67,11 +67,11 @@ determine.eros.cumsed.E3D <- function(FCl,MCl,CCl, FSi,MSi,CSi, FSa,MSa,CSa, Cor
   soils$POLY_ID<- 1:simlines
 
   write.relief.E3D(POLY_ID = soils$POLY_ID,plotlength,round(slope),file.path(path,"model/"), resolution = resolution)
-  rq <- list(project= "/e3dtestdata/skin/model/run.par",
-             dem= "/e3dtestdata/skin/model/dem.asc",
+  rq <- list(project= file.path(path,"model/run.par"),
+             dem= file.path(path,"model/dem.asc"),
              stream= "",
              pdir= "",
-             outputdir= "/e3dtestdata/skin/model/relief/",
+             outputdir= file.path(path,"model/relief/"),
              overwrite= TRUE)
   r <- httr::POST("http://localhost:8010/e3d/reliefdataset/", body = rq, encode = "json")
   if(r$status_code!=200){stop()}
@@ -98,10 +98,10 @@ determine.eros.cumsed.E3D <- function(FCl,MCl,CCl, FSi,MSi,CSi, FSa,MSa,CSa, Cor
 
       utils::write.csv(soils,file.path(path,"model/soil/soil_params.csv"), row.names = FALSE, quote = FALSE)
 
-      rq <- list(project= "/e3dtestdata/skin/model/run.par",
-                 relief= "/e3dtestdata/skin/model/relief",
-                 soil= "/e3dtestdata/skin/model/soil",
-                 rain= "/e3dtestdata/skin/model/rain_e3d.csv",
+      rq <- list(project= file.path(path,"model/run.par"),
+                 relief= file.path(path,"model/relief"),
+                 soil= file.path(path,"model/soil"),
+                 rain= file.path(path,"model/rain_e3d.csv"),
                  znmeteo= "",
                  etp= "",
                  pdir= "",
@@ -113,7 +113,7 @@ determine.eros.cumsed.E3D <- function(FCl,MCl,CCl, FSi,MSi,CSi, FSa,MSa,CSa, Cor
                  we= "",
                  ssd= "",
                  snowage= "",
-                 outputdir= "/e3dtestdata/skin/model/result",
+                 outputdir= file.path(path,"model/result"),
                  overwrite= TRUE)
       r <- httr::POST("http://localhost:8010/e3d/simulate/lo/direct/", body = rq, encode = "json")
       if(r$status_code!=200){stop()}
