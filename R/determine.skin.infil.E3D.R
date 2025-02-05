@@ -81,7 +81,7 @@ determine.skin.infil.E3D <- function(Cl, Si, Sa, Corg, Bulk, Moist, infilrate, i
     )
 
   if(ponding){change_settings.E3D(path, filename = "model/run.par", module = c("WatchCell","WatchCell"), setting = c("WatchMethod","WatchCellList"), value = c("1",file.path(path,"model/watchcell.csv")))}
-  if(!ponding){change_settings.E3D(path, filename = "model/run.par", module = c("WatchCell","WatchCell","Infiltration_model"), setting = c("WatchMethod","WatchCellList","Ponding"), value = c("1",file.path(path,"model/watchcell.csv","0")))}
+  if(!ponding){change_settings.E3D(path, filename = "model/run.par", module = c("WatchCell","WatchCell","Infiltration_model"), setting = c("WatchMethod","WatchCellList","Ponding"), value = c("1",file.path(path,"model/watchcell.csv"),"0"))}
 
 
   #iteration of Skinfaktor

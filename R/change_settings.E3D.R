@@ -24,6 +24,8 @@ change_settings.E3D <- function(path = NA, filename = "model/run.par", module = 
     {
       standard_ini[[module[i]]][[setting[i]]] <- as.character(value[i])
     }
+  }else{
+    warning("check your settings!")
   }
 
   if(setpath)
